@@ -1,35 +1,11 @@
-# Astro Starter Kit: Component Package
+# astro-integration-pocketbase
 
-This is a template for an Astro component library. Use this template for writing components to use in multiple projects or publish to NPM.
+<!-- ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/pawcoding/astro-integration-pocketbase/release.yaml?style=flat-square) -->
+<!-- [![NPM Version](https://img.shields.io/npm/v/astro-integration-pocketbase?style=flat-square)](https://www.npmjs.com/package/astro-integration-pocketbase) -->
+<!-- [![NPM Downloads](https://img.shields.io/npm/dw/astro-integration-pocketbase?style=flat-square)](https://www.npmjs.com/package/astro-integration-pocketbase) -->
 
-```sh
-npm create astro@latest -- --template component
-```
+[![GitHub License](https://img.shields.io/github/license/pawcoding/astro-integration-pocketbase?style=flat-square)](https://github.com/pawcoding/astro-integration-pocketbase/blob/master/LICENSE)
+[![Discord](https://img.shields.io/discord/484669557747875862?style=flat-square&label=Discord)](https://discord.gg/GzgTh4hxrx)
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/non-html-pages)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/non-html-pages)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/component/devcontainer.json)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── index.ts
-├── src
-│   └── MyComponent.astro
-├── tsconfig.json
-├── package.json
-```
-
-The `index.ts` file is the "entry point" for your package. Export your components in `index.ts` to make them importable from your package.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command       | Action                                                                                                                                                                                                                           |
-| :------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `npm link`    | Registers this package locally. Run `npm link my-component-library` in an Astro project to install your components                                                                                                               |
-| `npm publish` | [Publishes](https://docs.npmjs.com/creating-and-publishing-unscoped-public-packages#publishing-unscoped-public-packages) this package to NPM. Requires you to be [logged in](https://docs.npmjs.com/cli/v8/commands/npm-adduser) |
+This package is currently in development and not yet published to npm.
+More information will be added when a first prototype is ready.
