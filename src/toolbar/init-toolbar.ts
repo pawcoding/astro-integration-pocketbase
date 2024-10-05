@@ -2,6 +2,7 @@ import type {
   ToolbarAppEventTarget,
   ToolbarServerHelpers
 } from "astro/runtime/client/dev-toolbar/helpers.js";
+import type { DevToolbarButton } from "astro/runtime/client/dev-toolbar/ui-library/button.js";
 import type { DevToolbarCard } from "astro/runtime/client/dev-toolbar/ui-library/card.js";
 import { default as packageJson } from "../../package.json";
 
@@ -13,13 +14,16 @@ export async function initToolbar(
   const container = document.createElement("astro-dev-toolbar-window");
   canvas.appendChild(container);
 
-  const header = createHeader(server);
+  const [header, refresh] = createHeader(server);
   container.appendChild(header);
 
   const placeholder = createPlaceholder();
   container.appendChild(placeholder);
 
-  app.onToolbarPlacementUpdated(({ placement }) => {
+  // Update the toolbar placement based on the user's preference
+  function updateToolbarPlacement(
+    placement: "bottom-left" | "bottom-right" | "bottom-center"
+  ) {
     if (placement === "bottom-left") {
       container.style.left = "16px";
       container.style.right = "unset";
@@ -33,21 +37,64 @@ export async function initToolbar(
       container.style.right = "unset";
       container.style.transform = "translateX(-50%)";
     }
+  }
+
+  // Read the initial toolbar placement from local storage
+  // This is a workaround since the initial toolbar placement is not available via any API
+  const settings = localStorage.getItem("astro:dev-toolbar:settings");
+  if (settings) {
+    const { placement } = JSON.parse(settings);
+    updateToolbarPlacement(placement);
+  }
+
+  // Listen for toolbar placement updates
+  app.onToolbarPlacementUpdated(({ placement }) => {
+    updateToolbarPlacement(placement);
   });
 
   server.on(
+    "astro-integration-pocketbase:settings",
+    ({ enabled }: { enabled?: boolean }) => {
+      // Show the refresh button if a loader is available
+      if (enabled) {
+        refresh.style.display = "unset";
+      }
+    }
+  );
+
+  server.on(
+    "astro-integration-pocketbase:refresh",
+    ({ loading }: { loading?: boolean }) => {
+      // Show loading state while refreshing content
+      if (loading) {
+        refresh.textContent = "Refreshing content...";
+        refresh.buttonStyle = "gray";
+        refresh.style.pointerEvents = "none";
+      } else {
+        refresh.textContent = "Refresh content";
+        refresh.buttonStyle = "green";
+        refresh.style.pointerEvents = "unset";
+      }
+    }
+  );
+
+  server.on(
     "astro-integration-pocketbase:entity",
-    (entity: { url: string; content: string }) => {
+    (entity: { href?: string; url: string; content: string }) => {
+      console.log("Received entity", entity);
+      // Clear the container
       const cards = container.getElementsByTagName("astro-dev-toolbar-card");
       for (const card of cards) {
         card.remove();
       }
 
       if (!entity) {
+        // No entity to display, show a placeholder
         container.appendChild(createPlaceholder());
         app.toggleState({ state: false });
         app.toggleNotification({ state: false });
       } else {
+        // Display the information of the entity
         container.appendChild(createEntity(entity));
         app.toggleNotification({ state: true, level: "info" });
       }
@@ -55,7 +102,9 @@ export async function initToolbar(
   );
 }
 
-function createHeader(server: ToolbarServerHelpers): HTMLElement {
+function createHeader(
+  server: ToolbarServerHelpers
+): [HTMLElement, DevToolbarButton] {
   const header = document.createElement("header");
   header.style.display = "grid";
   header.style.gap = "0.25rem";
@@ -76,12 +125,13 @@ function createHeader(server: ToolbarServerHelpers): HTMLElement {
   refresh.buttonStyle = "green";
   refresh.style.marginLeft = "auto";
   refresh.textContent = "Refresh content";
+  refresh.style.display = "none";
   refresh.addEventListener("click", () => {
     server.send("astro-integration-pocketbase:refresh", true);
   });
   header.appendChild(refresh);
 
-  return header;
+  return [header, refresh];
 }
 
 function createPlaceholder(): DevToolbarCard {
