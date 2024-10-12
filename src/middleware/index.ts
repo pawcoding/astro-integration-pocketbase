@@ -2,13 +2,19 @@ import { defineMiddleware } from "astro/middleware";
 import { isPocketbaseEntry } from "./is-pocketbase-entry";
 
 export const onRequest = defineMiddleware(async (context, next) => {
+  // Look for entities given as props to the page
   const props = Object.values(context.props);
-  const _entities = props.filter(isPocketbaseEntry).map((prop) => prop.data);
-  //    ^-- These are the entities that we want to send to the toolbar
-  // Not sure though, how to get them to "astro:server:setup" where we can actually send them
+  const entities = props.filter(isPocketbaseEntry).map((prop) => prop.data);
 
   const response = await next();
-  //    ^-- I tried to add the entities to the response headers, but this is done *after* the server middleware is executed
+  const body = await response.text();
 
-  return response;
+  // Append the entities to the <head>
+  const entitiesJson = JSON.stringify(entities);
+  const newBody = body.replace(
+    "</head>",
+    `<script>window.__astro_entities__ = ${entitiesJson}</script></head>`
+  );
+
+  return new Response(newBody, response);
 });

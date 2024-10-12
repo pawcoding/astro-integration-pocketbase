@@ -6,19 +6,63 @@ import type { DevToolbarButton } from "astro/runtime/client/dev-toolbar/ui-libra
 import type { DevToolbarCard } from "astro/runtime/client/dev-toolbar/ui-library/card.js";
 import { default as packageJson } from "../../package.json";
 
+interface Entity {
+  id: string;
+  collectionId: string;
+}
+
+declare global {
+  interface Window {
+    __astro_entities__?: Array<Entity>;
+  }
+}
+
 export async function initToolbar(
   canvas: ShadowRoot,
   app: ToolbarAppEventTarget,
   server: ToolbarServerHelpers
 ): Promise<void> {
+  // Base url of the PocketBase instance
+  let pbUrl: string | undefined = undefined;
+
   const container = document.createElement("astro-dev-toolbar-window");
-  canvas.appendChild(container);
 
   const [header, refresh] = createHeader(server);
   container.appendChild(header);
 
+  // Container for the main content
+  const contentContainer = document.createElement("div");
+  container.appendChild(contentContainer);
+
   const placeholder = createPlaceholder();
-  container.appendChild(placeholder);
+  contentContainer.appendChild(placeholder);
+
+  app.onToggled(({ state }) => {
+    // Clear the container
+    contentContainer.innerHTML = "";
+
+    if (!state) {
+      // Clear the dev-window
+      canvas.innerHTML = "";
+      return;
+    }
+
+    // Append the dev-window
+    canvas.appendChild(container);
+
+    // Check if entities are present
+    const entities = window.__astro_entities__;
+    if (!entities || entities.length === 0) {
+      // No entities to display, show a placeholder
+      contentContainer.appendChild(createPlaceholder());
+      return;
+    }
+
+    // Display the information about the entities
+    for (const entity of entities) {
+      contentContainer.appendChild(createEntity(entity, pbUrl));
+    }
+  });
 
   // Update the toolbar placement based on the user's preference
   function updateToolbarPlacement(
@@ -54,11 +98,14 @@ export async function initToolbar(
 
   server.on(
     "astro-integration-pocketbase:settings",
-    ({ enabled }: { enabled?: boolean }) => {
+    ({ enabled, baseUrl }: { enabled: boolean; baseUrl: string }) => {
       // Show the refresh button if a loader is available
       if (enabled) {
         refresh.style.display = "unset";
       }
+
+      // Store the base URL for later use
+      pbUrl = baseUrl;
     }
   );
 
@@ -74,29 +121,6 @@ export async function initToolbar(
         refresh.textContent = "Refresh content";
         refresh.buttonStyle = "green";
         refresh.style.pointerEvents = "unset";
-      }
-    }
-  );
-
-  server.on(
-    "astro-integration-pocketbase:entity",
-    (entity: { href?: string; url: string; content: string }) => {
-      console.log("Received entity", entity);
-      // Clear the container
-      const cards = container.getElementsByTagName("astro-dev-toolbar-card");
-      for (const card of cards) {
-        card.remove();
-      }
-
-      if (!entity) {
-        // No entity to display, show a placeholder
-        container.appendChild(createPlaceholder());
-        app.toggleState({ state: false });
-        app.toggleNotification({ state: false });
-      } else {
-        // Display the information of the entity
-        container.appendChild(createEntity(entity));
-        app.toggleNotification({ state: true, level: "info" });
       }
     }
   );
@@ -150,30 +174,34 @@ function createPlaceholder(): DevToolbarCard {
   return main;
 }
 
-function createEntity(data: { url: string; content: string }): DevToolbarCard {
+function createEntity(data: Entity, baseUrl?: string): DevToolbarCard {
   const main = document.createElement("astro-dev-toolbar-card");
 
   const content = document.createElement("div");
-  main.style.position = "relative";
+  content.style.position = "relative";
   main.appendChild(content);
 
-  const viewInPocketbase = document.createElement("astro-dev-toolbar-button");
-  viewInPocketbase.size = "small";
-  viewInPocketbase.buttonStyle = "purple";
-  viewInPocketbase.textContent = "View in PocketBase";
-  viewInPocketbase.style.position = "absolute";
-  viewInPocketbase.style.top = "16px";
-  viewInPocketbase.style.right = "16px";
-  viewInPocketbase.addEventListener("click", () => {
-    window.open(data.url, "_blank");
-  });
-  content.appendChild(viewInPocketbase);
+  if (baseUrl) {
+    const url = `${baseUrl}/_/#/collections?collectionId=${data.collectionId}&recordId=${data.id}`;
+
+    const viewInPocketbase = document.createElement("astro-dev-toolbar-button");
+    viewInPocketbase.size = "small";
+    viewInPocketbase.buttonStyle = "purple";
+    viewInPocketbase.textContent = "View in PocketBase";
+    viewInPocketbase.style.position = "absolute";
+    viewInPocketbase.style.top = "0";
+    viewInPocketbase.style.right = "0";
+    viewInPocketbase.addEventListener("click", () => {
+      window.open(url, "_blank");
+    });
+    content.appendChild(viewInPocketbase);
+  }
 
   const entity = document.createElement("pre");
   entity.style.margin = "0";
   entity.style.overflow = "auto";
   entity.style.height = "300px";
-  entity.textContent = data.content;
+  entity.textContent = JSON.stringify(data, null, 2);
   content.appendChild(entity);
 
   return main;

@@ -1,14 +1,21 @@
 import type { AstroIntegration } from "astro";
 import { fileURLToPath } from "node:url";
 
-export function pocketbaseIntegration(): AstroIntegration {
-  // eslint-disable-next-line prefer-const
-  let lastData: { url: string; content: unknown } | undefined = undefined;
-
+export function pocketbaseIntegration({
+  url
+}: {
+  url: string;
+}): AstroIntegration {
   return {
     name: "pocketbase-integration",
     hooks: {
-      "astro:config:setup": ({ addDevToolbarApp, addMiddleware }) => {
+      "astro:config:setup": ({ addDevToolbarApp, addMiddleware, command }) => {
+        // This integration is only available in dev mode
+        if (command !== "dev") {
+          return;
+        }
+
+        // Setup Toolbar
         addDevToolbarApp({
           name: "PocketBase",
           id: `pocketbase-entry`,
@@ -16,31 +23,13 @@ export function pocketbaseIntegration(): AstroIntegration {
           entrypoint: fileURLToPath(new URL("./toolbar", import.meta.url))
         });
 
+        // Setup middleware
         addMiddleware({
           order: "post",
           entrypoint: fileURLToPath(new URL("./middleware", import.meta.url))
         });
       },
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      "astro:server:setup": ({ toolbar, logger, refreshContent, server }) => {
-        /* server.middlewares.use((req, res, next) => {
-          const entities = res.getHeader("X-Entities");
-          console.log("Entities from headers", entities);
-          if (entities && typeof entities === "string") {
-            const parsedEntities = JSON.parse(entities);
-            logger.info(`Sending entity to toolbar: ${entities}`);
-
-            lastData = {
-              url: `https://api.pawcode.de/_/#/collections?collectionId=${parsedEntities[0].collectionId}&recordId=${parsedEntities[0].id}`,
-              content: parsedEntities
-            };
-            toolbar.send("astro-integration-pocketbase:entity", lastData);
-          }
-
-          return next();
-        }); */
-        // ^-- This experiment didn't work, because the other middleware is executed after this one
-
+      "astro:server:setup": ({ toolbar, logger, refreshContent }) => {
         // Setup the listener for the refresh event if a loader is available
         if (refreshContent) {
           logger.info("Setting up refresh listener for PocketBase integration");
@@ -65,15 +54,12 @@ export function pocketbaseIntegration(): AstroIntegration {
           });
         }
 
+        // Send settings to the toolbar on initialization
         toolbar.onAppInitialized("pocketbase-entry", () => {
-          if (refreshContent) {
-            logger.debug("Enabling refresh button in the toolbar");
-            toolbar.send("astro-integration-pocketbase:settings", {
-              enabled: true
-            });
-          }
-
-          toolbar.send("astro-integration-pocketbase:entity", lastData);
+          toolbar.send("astro-integration-pocketbase:settings", {
+            enabled: !!refreshContent,
+            baseUrl: url
+          });
         });
       }
     }
