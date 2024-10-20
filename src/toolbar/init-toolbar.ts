@@ -2,14 +2,9 @@ import type {
   ToolbarAppEventTarget,
   ToolbarServerHelpers
 } from "astro/runtime/client/dev-toolbar/helpers.js";
-import type { DevToolbarButton } from "astro/runtime/client/dev-toolbar/ui-library/button.js";
-import type { DevToolbarCard } from "astro/runtime/client/dev-toolbar/ui-library/card.js";
-import { default as packageJson } from "../../package.json";
-
-interface Entity {
-  id: string;
-  collectionId: string;
-}
+import { createEntity, createHeader, createPlaceholder } from "./dom/";
+import { listenToNavigation } from "./page-navigation-listener";
+import type { Entity } from "./types/entity";
 
 declare global {
   interface Window {
@@ -17,6 +12,9 @@ declare global {
   }
 }
 
+/**
+ * Initializes the PocketBase toolbar.
+ */
 export async function initToolbar(
   canvas: ShadowRoot,
   app: ToolbarAppEventTarget,
@@ -124,85 +122,20 @@ export async function initToolbar(
       }
     }
   );
-}
 
-function createHeader(
-  server: ToolbarServerHelpers
-): [HTMLElement, DevToolbarButton] {
-  const header = document.createElement("header");
-  header.style.display = "grid";
-  header.style.gap = "0.25rem";
-  header.style.gridTemplateColumns = "auto auto 1fr";
+  // Toggle the notification based on the presence of entities
+  listenToNavigation(() => {
+    // Check if entities are present
+    const entities = window.__astro_entities__;
+    if (!entities || entities.length === 0) {
+      app.toggleNotification({ state: false });
 
-  const title = document.createElement("h3");
-  title.style.marginTop = "0.25rem";
-  title.textContent = "PocketBase";
-  header.appendChild(title);
+      // Hide the toolbar if no entities are present
+      app.toggleState({ state: false });
+      return;
+    }
 
-  const version = document.createElement("astro-dev-toolbar-badge");
-  version.textContent = packageJson.version;
-  version.badgeStyle = "yellow";
-  header.appendChild(version);
-
-  const refresh = document.createElement("astro-dev-toolbar-button");
-  refresh.size = "small";
-  refresh.buttonStyle = "green";
-  refresh.style.marginLeft = "auto";
-  refresh.textContent = "Refresh content";
-  refresh.style.display = "none";
-  refresh.addEventListener("click", () => {
-    server.send("astro-integration-pocketbase:refresh", true);
+    // Show the notification
+    app.toggleNotification({ state: true, level: "info" });
   });
-  header.appendChild(refresh);
-
-  return [header, refresh];
-}
-
-function createPlaceholder(): DevToolbarCard {
-  const main = document.createElement("astro-dev-toolbar-card");
-
-  const content = document.createElement("div");
-  content.style.display = "flex";
-  content.style.alignItems = "center";
-  content.style.justifyContent = "center";
-  main.appendChild(content);
-
-  const placeholder = document.createElement("span");
-  placeholder.textContent = "Here you will see the raw content of an entity";
-  content.appendChild(placeholder);
-
-  return main;
-}
-
-function createEntity(data: Entity, baseUrl?: string): DevToolbarCard {
-  const main = document.createElement("astro-dev-toolbar-card");
-
-  const content = document.createElement("div");
-  content.style.position = "relative";
-  main.appendChild(content);
-
-  if (baseUrl) {
-    const url = `${baseUrl}/_/#/collections?collectionId=${data.collectionId}&recordId=${data.id}`;
-
-    const viewInPocketbase = document.createElement("astro-dev-toolbar-button");
-    viewInPocketbase.size = "small";
-    viewInPocketbase.buttonStyle = "purple";
-    viewInPocketbase.textContent = "View in PocketBase";
-    viewInPocketbase.style.position = "absolute";
-    viewInPocketbase.style.top = "0";
-    viewInPocketbase.style.right = "0";
-    viewInPocketbase.addEventListener("click", () => {
-      window.open(url, "_blank");
-    });
-    content.appendChild(viewInPocketbase);
-  }
-
-  const entity = document.createElement("pre");
-  entity.style.margin = "0";
-  entity.style.overflow = "auto";
-  entity.style.height = "300px";
-  entity.textContent = JSON.stringify(data, null, 2);
-  content.appendChild(entity);
-
-  return main;
 }
