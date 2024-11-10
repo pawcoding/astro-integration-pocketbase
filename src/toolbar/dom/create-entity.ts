@@ -34,7 +34,6 @@ export function createEntity(data: Entity, baseUrl?: string): DevToolbarCard {
   const entity = document.createElement("pre");
   entity.style.margin = "0";
   entity.style.overflow = "auto";
-  entity.style.height = "300px";
   entity.textContent = JSON.stringify(data, null, 2);
   content.appendChild(entity);
 

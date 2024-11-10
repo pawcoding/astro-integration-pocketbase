@@ -30,6 +30,11 @@ export async function initToolbar(
 
   // Container for the main content
   const contentContainer = document.createElement("div");
+  contentContainer.style.display = "flex";
+  contentContainer.style.flexDirection = "column";
+  contentContainer.style.gap = "8px";
+  contentContainer.style.maxHeight = "400px";
+  contentContainer.style.overflowY = "auto";
   container.appendChild(contentContainer);
 
   const placeholder = createPlaceholder();

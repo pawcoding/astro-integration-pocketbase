@@ -4,7 +4,7 @@ import { z } from "astro/zod";
  * Schema for a PocketBase entry created with [astro-loader-pocketbase](https://github.com/pawcoding/astro-loader-pocketbase)
  */
 const pocketbaseEntrySchema = z.object({
-  id: z.string().length(15),
+  id: z.string(),
   data: z.object({
     id: z.string().length(15),
     collectionId: z.string().length(15),

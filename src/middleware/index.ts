@@ -1,10 +1,10 @@
 import { defineMiddleware } from "astro/middleware";
-import { isPocketbaseEntry } from "./is-pocketbase-entry";
+import { isPocketbaseEntry, type PocketBaseEntry } from "./is-pocketbase-entry";
 
 export const onRequest = defineMiddleware(async (context, next) => {
   // Look for entities given as props to the page
   const props = Object.values(context.props);
-  const entities = props.filter(isPocketbaseEntry).map((prop) => prop.data);
+  const entities = findEntitiesRecursive(props).map((entity) => entity.data);
 
   const response = await next();
   const body = await response.text();
@@ -18,3 +18,26 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   return new Response(newBody, response);
 });
+
+/**
+ * Find PocketBase entities in the given data.
+ */
+function findEntitiesRecursive(data: unknown): Array<PocketBaseEntry> {
+  // Check if the data is an array and search for entities in each element
+  if (Array.isArray(data)) {
+    return data.flatMap(findEntitiesRecursive);
+  }
+
+  if (typeof data === "object" && data !== null) {
+    // Check if the data is an object and a PocketBase entry
+    if (isPocketbaseEntry(data)) {
+      return [data];
+    }
+
+    // Search for entities in all values
+    return findEntitiesRecursive(Object.values(data));
+  }
+
+  // No entities found
+  return [];
+}
