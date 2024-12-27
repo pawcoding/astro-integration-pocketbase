@@ -1,11 +1,17 @@
 import type { AstroIntegration } from "astro";
+import { EventSource } from "eventsource";
 import { fileURLToPath } from "node:url";
 
 export function pocketbaseIntegration({
-  url
+  url,
+  subscriptions
 }: {
   url: string;
+  // TODO: Check if this can be extracted directly from the loader
+  subscriptions?: Array<string>;
 }): AstroIntegration {
+  let eventSource: EventSource | null = null;
+
   return {
     name: "pocketbase-integration",
     hooks: {
@@ -52,6 +58,57 @@ export function pocketbaseIntegration({
               loading: false
             });
           });
+
+          if (EventSource && subscriptions && subscriptions.length > 0) {
+            eventSource = new EventSource(`${url}/api/realtime`);
+
+            // Log potential errors
+            eventSource.onerror = (error) => {
+              // TODO: Do not log errors when reconnecting
+              logger.error(
+                `Error while connecting to PocketBase realtime API: ${error.type}`
+              );
+            };
+
+            // DEBUG: Log all messages
+            eventSource.onmessage = (event) => {
+              console.log(event.type, event.data);
+            };
+
+            // Add event listeners for all collections
+            for (const subscription of subscriptions) {
+              // TODO: Check why this it not working
+              eventSource.addEventListener(subscription, (event) => {
+                console.log(event.type, event.data);
+              });
+            }
+
+            // Add event listener for the connection event
+            eventSource.addEventListener("PB_CONNECT", async (event) => {
+              // Extract the clientId
+              const clientId: string = JSON.parse(event.data).clientId;
+
+              // Add clientId and collections to subscribe to
+              const body = new FormData();
+              body.append("clientId", clientId);
+              body.append("subscriptions", JSON.stringify(subscriptions));
+
+              // Subscribe to the PocketBase realtime API
+              const result = await fetch(`${url}/api/realtime`, {
+                method: "POST",
+                body
+              });
+
+              // Log the connection status
+              if (!result.ok) {
+                logger.error(
+                  `Error while subscribing to PocketBase realtime API: ${result.status}`
+                );
+              } else {
+                logger.info("Subscribed to PocketBase realtime API");
+              }
+            });
+          }
         }
 
         // Send settings to the toolbar on initialization
@@ -61,6 +118,12 @@ export function pocketbaseIntegration({
             baseUrl: url
           });
         });
+      },
+      "astro:server:done": () => {
+        // Close the EventSource connection when the server is done
+        if (eventSource) {
+          eventSource.close();
+        }
       }
     }
   };
