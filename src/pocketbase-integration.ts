@@ -78,7 +78,7 @@ export function pocketbaseIntegration({
             // Add event listeners for all collections
             for (const subscription of subscriptions) {
               // TODO: Check why this it not working
-              eventSource.addEventListener(subscription, (event) => {
+              eventSource.addEventListener(`${subscription}/*`, (event) => {
                 console.log(event.type, event.data);
               });
             }
@@ -91,7 +91,16 @@ export function pocketbaseIntegration({
               // Add clientId and collections to subscribe to
               const body = new FormData();
               body.append("clientId", clientId);
-              body.append("subscriptions", JSON.stringify(subscriptions));
+              body.append(
+                "subscriptions",
+                JSON.stringify(subscriptions.map((c) => `${c}/*`))
+              );
+
+              // DEBUG: Log body content as JSON
+              console.log(
+                "Subscribing to PocketBase realtime API with body:",
+                JSON.stringify(Object.fromEntries(body.entries()))
+              );
 
               // Subscribe to the PocketBase realtime API
               const result = await fetch(`${url}/api/realtime`, {
