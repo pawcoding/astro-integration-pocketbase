@@ -93,7 +93,7 @@ export function pocketbaseIntegration({
               body.append("clientId", clientId);
               body.append(
                 "subscriptions",
-                JSON.stringify(subscriptions.map((c) => `${c}/*`))
+                JSON.stringify(subscriptions)
               );
 
               // DEBUG: Log body content as JSON
