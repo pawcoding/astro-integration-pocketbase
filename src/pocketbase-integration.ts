@@ -1,12 +1,18 @@
 import type { AstroIntegration } from "astro";
 import { EventSource } from "eventsource";
 import { fileURLToPath } from "node:url";
+import { getSuperuserToken } from "./utils/get-superuser-token";
 
 export function pocketbaseIntegration({
   url,
+  superuserCredentials,
   subscriptions
 }: {
   url: string;
+  superuserCredentials?: {
+    email: string;
+    password: string;
+  };
   // TODO: Check if this can be extracted directly from the loader
   subscriptions?: Array<string>;
 }): AstroIntegration {
@@ -60,63 +66,79 @@ export function pocketbaseIntegration({
           });
 
           if (EventSource && subscriptions && subscriptions.length > 0) {
-            eventSource = new EventSource(`${url}/api/realtime`);
+            if (!superuserCredentials) {
+              logger.warn("No superuser credentials available, skipping subscription to PocketBase realtime API");
+            } else {
 
-            // Log potential errors
-            eventSource.onerror = (error) => {
-              // TODO: Do not log errors when reconnecting
-              logger.error(
-                `Error while connecting to PocketBase realtime API: ${error.type}`
-              );
-            };
+              eventSource = new EventSource(`${url}/api/realtime`);
 
-            // DEBUG: Log all messages
-            eventSource.onmessage = (event) => {
-              console.log(event.type, event.data);
-            };
+              // Log potential errors
+              eventSource.onerror = (error) => {
+                // TODO: Do not log errors when reconnecting
+                logger.error(
+                  `Error while connecting to PocketBase realtime API: ${error.type}`
+                );
+              };
 
-            // Add event listeners for all collections
-            for (const subscription of subscriptions) {
-              // TODO: Check why this it not working
-              eventSource.addEventListener(`${subscription}/*`, (event) => {
+              // DEBUG: Log all messages
+              eventSource.onmessage = (event) => {
                 console.log(event.type, event.data);
+              };
+
+              // Add event listeners for all collections
+              for (const subscription of subscriptions) {
+                // TODO: Check why this it not working
+                eventSource.addEventListener(`${subscription}/*`, async (event) => {
+                  console.log(event.type, event.data);
+                  await refreshContent({
+                    loaders: ["pocketbase-loader"],
+                    // TODO: add context to refresh one or all collections
+                    context: {}
+                  });
+                });
+              }
+
+              // Add event listener for the connection event
+              eventSource.addEventListener("PB_CONNECT", async (event) => {
+                // Extract the clientId
+                const clientId: string = event.lastEventId;
+
+                // Get the superuser token
+                const superuserToken = await getSuperuserToken(url, superuserCredentials, logger);
+
+                // DEBUG: Log body content as JSON
+                console.log(
+                  "Subscribing to PocketBase realtime API with body:",
+                  JSON.stringify({
+                    clientId: clientId,
+                    subscriptions: subscriptions.map((c) => `${c}/*`)
+                  })
+                );
+
+
+                // Subscribe to the PocketBase realtime API
+                const result = await fetch(`${url}/api/realtime`, {
+                  method: "POST",
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: superuserToken || ""
+                  },
+                  body: JSON.stringify({
+                    clientId: clientId,
+                    subscriptions: subscriptions.map((c) => `${c}/*`)
+                  })
+                });
+
+                // Log the connection status
+                if (!result.ok) {
+                  logger.error(
+                    `Error while subscribing to PocketBase realtime API: ${result.status}`
+                  );
+                } else {
+                  logger.info("Subscribed to PocketBase realtime API");
+                }
               });
             }
-
-            // Add event listener for the connection event
-            eventSource.addEventListener("PB_CONNECT", async (event) => {
-              // Extract the clientId
-              const clientId: string = JSON.parse(event.data).clientId;
-
-              // Add clientId and collections to subscribe to
-              const body = new FormData();
-              body.append("clientId", clientId);
-              body.append(
-                "subscriptions",
-                JSON.stringify(subscriptions.map((c) => `${c}/*`))
-              );
-
-              // DEBUG: Log body content as JSON
-              console.log(
-                "Subscribing to PocketBase realtime API with body:",
-                JSON.stringify(Object.fromEntries(body.entries()))
-              );
-
-              // Subscribe to the PocketBase realtime API
-              const result = await fetch(`${url}/api/realtime`, {
-                method: "POST",
-                body
-              });
-
-              // Log the connection status
-              if (!result.ok) {
-                logger.error(
-                  `Error while subscribing to PocketBase realtime API: ${result.status}`
-                );
-              } else {
-                logger.info("Subscribed to PocketBase realtime API");
-              }
-            });
           }
         }
 
