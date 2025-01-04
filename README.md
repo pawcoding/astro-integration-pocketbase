@@ -30,6 +30,15 @@ export default defineConfig({
     pocketbaseIntegration({
       // Make sure to use the same URL as in your pocketbaseLoader configuration
       url: "https://<your-pocketbase-url>"
+
+      // Optional: Superuser credentials for realtime updates
+      superuserCredentials: {
+        email: "admin@example.com",
+        password: "password123"
+      },
+
+      // Optional: Collections to subscribe to for realtime updates
+      subscriptions: ["posts", "comments"]
     })
   ]
 });
@@ -39,6 +48,8 @@ After adding the integration to your Astro config, you can start the dev server 
 If you click on the icon, you can see the PocketBase entity viewer.
 
 If a loader is found, the viewer will show a refresh button to reload all entries from the loaders.
+
+If superuser credentials are set, realtime updates will be enabled on the collections set.
 
 ## Entity viewer
 
@@ -82,6 +93,8 @@ The integration will automatically detect PocketBase entries in the props and di
 
 ## All options
 
-| Option | Type     | Required | Description                          |
-| ------ | -------- | -------- | ------------------------------------ |
-| `url`  | `string` | x        | The URL of your PocketBase instance. |
+| Option                 | Type                                  | Required | Description                                                                                            |
+| ---------------------- | ------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
+| `url`                  | `string`                              | x        | The URL of your PocketBase instance.                                                                   |
+| `superuserCredentials` | `{ email: string, password: string }` |          | The email and password of the superuser of the PocketBase instance. This is used for realtime updates. |
+| `subscriptions`        | `Array<string>`                       |          | Collections to watch for changes.                                                                      |
