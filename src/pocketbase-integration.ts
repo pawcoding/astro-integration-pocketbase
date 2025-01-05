@@ -1,22 +1,13 @@
 import type { AstroIntegration } from "astro";
 import { EventSource } from "eventsource";
 import { fileURLToPath } from "node:url";
-import { getSuperuserToken } from "./utils/get-superuser-token";
+import { handleRefreshCollections, refreshCollectionsRealtime } from "./core";
+import type { PocketBaseIntegrationOptions } from "./types/pocketbase-integration-options.type";
 
-export function pocketbaseIntegration({
-  url,
-  superuserCredentials,
-  subscriptions
-}: {
-  url: string;
-  superuserCredentials?: {
-    email: string;
-    password: string;
-  };
-  // TODO: Check if this can be extracted directly from the loader
-  subscriptions?: Array<string>;
-}): AstroIntegration {
-  let eventSource: EventSource | null = null;
+export function pocketbaseIntegration(
+  options: PocketBaseIntegrationOptions
+): AstroIntegration {
+  let eventSource: EventSource | undefined = undefined;
 
   return {
     name: "pocketbase-integration",
@@ -41,112 +32,18 @@ export function pocketbaseIntegration({
           entrypoint: fileURLToPath(new URL("./middleware", import.meta.url))
         });
       },
-      "astro:server:setup": ({ toolbar, logger, refreshContent }) => {
-        // Setup the listener for the refresh event if a loader is available
-        if (refreshContent) {
-          logger.info("Setting up refresh listener for PocketBase integration");
-          // Listen for the refresh event of the toolbar
-          toolbar.on("astro-integration-pocketbase:refresh", async () => {
-            // Send a loading state to the toolbar
-            toolbar.send("astro-integration-pocketbase:refresh", {
-              loading: true
-            });
+      "astro:server:setup": (setupOptions) => {
+        // Listen for the refresh event of the toolbar
+        handleRefreshCollections(setupOptions);
 
-            // Refresh content loaded by the PocketBase loader
-            await refreshContent({
-              loaders: ["pocketbase-loader"],
-              // TODO: add context to refresh one or all collections
-              context: {}
-            });
-
-            // Reset the loading state in the toolbar
-            toolbar.send("astro-integration-pocketbase:refresh", {
-              loading: false
-            });
-          });
-
-          if (EventSource && subscriptions && subscriptions.length > 0) {
-            if (!superuserCredentials) {
-              logger.warn("No superuser credentials available, skipping subscription to PocketBase realtime API");
-            } else {
-
-              eventSource = new EventSource(`${url}/api/realtime`);
-
-              // Log potential errors
-              eventSource.onerror = (error) => {
-                // TODO: Do not log errors when reconnecting
-                logger.error(
-                  `Error while connecting to PocketBase realtime API: ${error.type}`
-                );
-              };
-
-              // DEBUG: Log all messages
-              eventSource.onmessage = (event) => {
-                console.log(event.type, event.data);
-              };
-
-              // Add event listeners for all collections
-              for (const subscription of subscriptions) {
-                // TODO: Check why this it not working
-                eventSource.addEventListener(`${subscription}/*`, async (event) => {
-                  console.log(event.type, event.data);
-                  await refreshContent({
-                    loaders: ["pocketbase-loader"],
-                    // TODO: add context to refresh one or all collections
-                    context: {}
-                  });
-                });
-              }
-
-              // Add event listener for the connection event
-              eventSource.addEventListener("PB_CONNECT", async (event) => {
-                // Extract the clientId
-                const clientId: string = event.lastEventId;
-
-                // Get the superuser token
-                const superuserToken = await getSuperuserToken(url, superuserCredentials, logger);
-
-                // DEBUG: Log body content as JSON
-                console.log(
-                  "Subscribing to PocketBase realtime API with body:",
-                  JSON.stringify({
-                    clientId: clientId,
-                    subscriptions: subscriptions.map((c) => `${c}/*`)
-                  })
-                );
-
-
-                // Subscribe to the PocketBase realtime API
-                const result = await fetch(`${url}/api/realtime`, {
-                  method: "POST",
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: superuserToken || ""
-                  },
-                  body: JSON.stringify({
-                    clientId: clientId,
-                    subscriptions: subscriptions.map((c) => `${c}/*`)
-                  })
-                });
-
-                // Log the connection status
-                if (!result.ok) {
-                  logger.error(
-                    `Error while subscribing to PocketBase realtime API: ${result.status}`
-                  );
-                } else {
-                  logger.info("Subscribed to PocketBase realtime API");
-                }
-              });
-            }
-          }
-        }
+        // Subscribe to PocketBase realtime API
+        eventSource = refreshCollectionsRealtime(options, setupOptions);
 
         // Send settings to the toolbar on initialization
-        toolbar.onAppInitialized("pocketbase-entry", () => {
-          toolbar.send("astro-integration-pocketbase:settings", {
-            enabled: !!refreshContent,
-            baseUrl: url
+        setupOptions.toolbar.onAppInitialized("pocketbase-entry", () => {
+          setupOptions.toolbar.send("astro-integration-pocketbase:settings", {
+            enabled: !!setupOptions.refreshContent,
+            baseUrl: options.url
           });
         });
       },
