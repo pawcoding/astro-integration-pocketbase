@@ -45,12 +45,14 @@ If a loader is found, the viewer will show a refresh button to reload all entrie
 PocketBase allows you to subscribe to collection changes via its [Realtime API](https://pocketbase.io/docs/api-realtime/).
 This integration allows you to subscribe to these changes and reload the entries / collections.
 
-To enable realtime updates, you need to provide the superuser credentials and the collections you want to watch.
+If you want realtime updates for collections with a [restricted list / search rule](https://pocketbase.io/docs/api-rules-and-filters/), you need to provide superuser credentials to the integration.
 
 ```ts
 pocketbaseIntegration({
   ...options,
+  // List of PocketBase collections to watch for changes
   collectionsToWatch: ["posts", "comments"],
+  // Superuser credentials for restricted collections (optional)
   superuserCredentials: {
     email: "<superuser-email>",
     password: "<superuser-password>"
@@ -102,8 +104,8 @@ The integration will automatically detect PocketBase entries in the props and di
 
 ## All options
 
-| Option                 | Type                                  | Required | Description                                                                                            |
-| ---------------------- | ------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------ |
-| `url`                  | `string`                              | x        | The URL of your PocketBase instance.                                                                   |
-| `collectionsToWatch`   | `Array<string>`                       |          | Collections to watch for changes.                                                                      |
-| `superuserCredentials` | `{ email: string, password: string }` |          | The email and password of the superuser of the PocketBase instance. This is used for realtime updates. |
+| Option                 | Type                                  | Required | Description                                                                                                                   |
+| ---------------------- | ------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `url`                  | `string`                              | x        | The URL of your PocketBase instance.                                                                                          |
+| `collectionsToWatch`   | `Array<string>`                       |          | Collections to watch for changes.                                                                                             |
+| `superuserCredentials` | `{ email: string, password: string }` |          | The email and password of a superuser of the PocketBase instance. This is used for realtime updates of restricted collection. |

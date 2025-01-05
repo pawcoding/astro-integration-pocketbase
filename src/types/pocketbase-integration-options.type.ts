@@ -8,7 +8,7 @@ export interface PocketBaseIntegrationOptions {
   url: string;
   /**
    * Credentials of a superuser to get full access to the PocketBase instance.
-   * This is required to automatically reload collections when entries change in realtime.
+   * This is required to access all resources even if they are not public.
    */
   superuserCredentials?: {
     /**
@@ -23,8 +23,6 @@ export interface PocketBaseIntegrationOptions {
   /**
    * List of PocketBase collections to watch for changes.
    * When an entry in one of these collections changes, the content will be reloaded.
-   *
-   * This is only available when the superuser credentials are provided.
    */
   collectionsToWatch?: Array<string>;
 }
