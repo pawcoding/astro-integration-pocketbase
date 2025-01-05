@@ -11,7 +11,8 @@ export function refreshCollectionsRealtime(
   }: PocketBaseIntegrationOptions,
   {
     logger,
-    refreshContent
+    refreshContent,
+    toolbar
   }: Parameters<BaseIntegrationHooks["astro:server:setup"]>[0]
 ): EventSource | undefined {
   // Check if collections should be watched
@@ -44,6 +45,12 @@ export function refreshCollectionsRealtime(
     return undefined;
   }
 
+  let refreshEnabled = true;
+  // Enable or disable real-time updates via the toolbar
+  toolbar.on("astro-integration-pocketbase:real-time", (enabled: boolean) => {
+    refreshEnabled = enabled;
+  });
+
   const eventSource = new EventSource(`${url}/api/realtime`);
   let wasConnectedOnce = false;
   let isConnected = false;
@@ -68,6 +75,12 @@ export function refreshCollectionsRealtime(
   // Add event listeners for all collections
   for (const collection of collectionsToWatch) {
     eventSource.addEventListener(`${collection}/*`, async () => {
+      // Do not refresh if the refresh is disabled
+      if (!refreshEnabled) {
+        return;
+      }
+
+      // Refresh the content
       logger.info(`Received update for ${collection}. Refreshing content...`);
       await refreshContent({
         loaders: ["pocketbase-loader"],
