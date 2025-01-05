@@ -45,13 +45,24 @@ export function refreshCollectionsRealtime(
   }
 
   const eventSource = new EventSource(`${url}/api/realtime`);
+  let wasConnectedOnce = false;
+  let isConnected = false;
 
   // Log potential errors
   eventSource.onerror = (error) => {
-    // TODO: Do not log errors when reconnecting
-    logger.error(
-      `Error while connecting to PocketBase realtime API: ${error.type}`
-    );
+    isConnected = false;
+
+    // Wait for 5 seconds in case of a connection error
+    setTimeout(() => {
+      if (isConnected) {
+        // Connection was automatically re-established, no need to log the error
+        return;
+      }
+
+      logger.error(
+        `Error while connecting to PocketBase realtime API: ${error.type}`
+      );
+    }, 5000);
   };
 
   // Add event listeners for all collections
@@ -96,13 +107,19 @@ export function refreshCollectionsRealtime(
       logger.error(
         `Error while subscribing to PocketBase realtime API: ${result.status}`
       );
-    } else {
+      return;
+    }
+
+    if (!wasConnectedOnce) {
+      wasConnectedOnce = true;
       logger.info(
         `Subscribed to PocketBase realtime API. Waiting for updates on ${collectionsToWatch.join(
           ", "
         )}.`
       );
     }
+
+    isConnected = true;
   });
 
   return eventSource;
