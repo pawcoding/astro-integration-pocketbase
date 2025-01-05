@@ -14,16 +14,13 @@ export async function getSuperuserToken(
     email: string;
     password: string;
   },
-  logger?: AstroIntegrationLogger
+  logger: AstroIntegrationLogger
 ): Promise<string | undefined> {
   // Build the URL for the login endpoint
   const loginUrl = new URL(
     `api/collections/_superusers/auth-with-password`,
     url
   ).href;
-
-  logger?.info(`Logging in to ${url} as superuser...`);
-  logger?.info(`Using email: ${superuserCredentials.email}`);
 
   // Create a new FormData object to send the login data
   const loginData = new FormData();
@@ -40,11 +37,7 @@ export async function getSuperuserToken(
   if (!loginRequest.ok) {
     const reason = await loginRequest.json().then((data) => data.message);
     const errorMessage = `The given email / password for ${url} was not correct. Astro may not have access to all resources and permissions.\nReason: ${reason}`;
-    if (logger) {
-      logger.error(errorMessage);
-    } else {
-      console.error(errorMessage);
-    }
+    logger.error(errorMessage);
     return undefined;
   }
 
