@@ -28,14 +28,6 @@ export function refreshCollectionsRealtime(
     return undefined;
   }
 
-  // Check if superuser credentials are available
-  if (!superuserCredentials) {
-    logger.warn(
-      "No superuser credentials available, skipping subscription to PocketBase realtime API."
-    );
-    return undefined;
-  }
-
   // Check if EventSource is available
   if (!EventSource) {
     logger.warn(
@@ -95,12 +87,15 @@ export function refreshCollectionsRealtime(
     // Extract the clientId
     const clientId = event.lastEventId;
 
-    // Get the superuser token
-    const superuserToken = await getSuperuserToken(
-      url,
-      superuserCredentials,
-      logger
-    );
+    // Get the superuser token if credentials are available
+    let superuserToken: string | undefined;
+    if (superuserCredentials) {
+      superuserToken = await getSuperuserToken(
+        url,
+        superuserCredentials,
+        logger
+      );
+    }
 
     // Subscribe to the PocketBase realtime API
     const result = await fetch(`${url}/api/realtime`, {
