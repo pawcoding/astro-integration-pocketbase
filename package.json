@@ -1,6 +1,6 @@
 {
   "name": "astro-integration-pocketbase",
-  "version": "0.2.0",
+  "version": "0.3.0-realtime-rc.1",
   "license": "MIT",
   "author": "Luis Wolf <development@pawcode.de> (https://pawcode.de)",
   "homepage": "https://github.com/pawcoding/astro-integration-pocketbase",
