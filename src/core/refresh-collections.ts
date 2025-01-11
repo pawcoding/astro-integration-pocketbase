@@ -26,8 +26,9 @@ export function handleRefreshCollections({
     logger.info("Refreshing content loaded by PocketBase loader");
     await refreshContent({
       loaders: ["pocketbase-loader"],
-      // TODO: add context to refresh one or all collections
-      context: {}
+      context: {
+        source: "astro-integration-pocketbase"
+      }
     });
 
     // Reset the loading state in the toolbar

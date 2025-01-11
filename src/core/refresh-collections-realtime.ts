@@ -76,8 +76,10 @@ export function refreshCollectionsRealtime(
       logger.info(`Received update for ${collection}. Refreshing content...`);
       await refreshContent({
         loaders: ["pocketbase-loader"],
-        // TODO: add context to refresh one or all collections
-        context: {}
+        context: {
+          source: "astro-integration-pocketbase",
+          collection
+        }
       });
     });
   }
