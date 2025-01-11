@@ -1,7 +1,6 @@
 # astro-integration-pocketbase
 
-<!-- ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/pawcoding/astro-integration-pocketbase/release.yaml?style=flat-square) -->
-
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/pawcoding/astro-integration-pocketbase/release.yaml?style=flat-square)
 [![NPM Version](https://img.shields.io/npm/v/astro-integration-pocketbase?style=flat-square)](https://www.npmjs.com/package/astro-integration-pocketbase)
 [![NPM Downloads](https://img.shields.io/npm/dw/astro-integration-pocketbase?style=flat-square)](https://www.npmjs.com/package/astro-integration-pocketbase)
 [![GitHub License](https://img.shields.io/github/license/pawcoding/astro-integration-pocketbase?style=flat-square)](https://github.com/pawcoding/astro-integration-pocketbase/blob/master/LICENSE)
@@ -11,9 +10,11 @@ This package provides an Astro toolbar for users of [astro-loader-pocketbase](ht
 
 ![PocketBase Toolbar](/assets/toolbar.png)
 
-> [!WARNING]
-> This package is still under development.
-> Until the first stable 1.0 release **breaking changes can occur at any time**.
+## Compatibility
+
+| Integration | Loader | Astro | PocketBase |
+| ----------- | ------ | ----- | ---------- |
+| 1.0.0       | 2.0.0  | 5.0.0 | >= 0.23.0  |
 
 ## Basic usage
 
@@ -44,6 +45,7 @@ If a loader is found, the viewer will show a refresh button to reload all entrie
 
 PocketBase allows you to subscribe to collection changes via its [Realtime API](https://pocketbase.io/docs/api-realtime/).
 This integration allows you to subscribe to these changes and reload the entries / collections.
+Note that Node.js currently does not support the [EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) API, so the integration uses the [eventsource](https://www.npmjs.com/package/eventsource) package to provide the same functionality.
 
 If you want realtime updates for collections with a [restricted list / search rule](https://pocketbase.io/docs/api-rules-and-filters/), you need to provide superuser credentials to the integration.
 
