@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.0.0...v1.1.0) (2025-01-11)
+
+
+### Features
+
+* **realtime:** only reload collection with changes ([ba8c67e](https://github.com/pawcoding/astro-integration-pocketbase/commit/ba8c67e94eb03633e364205b75f7f3d85796e57b)), closes [#5](https://github.com/pawcoding/astro-integration-pocketbase/issues/5)
+
 # [1.0.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v0.2.0...v1.0.0) (2025-01-11)
 
 
