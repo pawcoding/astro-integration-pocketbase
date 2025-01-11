@@ -1,11 +1,15 @@
 import type { AstroIntegration } from "astro";
+import { EventSource } from "eventsource";
 import { fileURLToPath } from "node:url";
+import { handleRefreshCollections, refreshCollectionsRealtime } from "./core";
+import type { ToolbarOptions } from "./toolbar/types/options";
+import type { PocketBaseIntegrationOptions } from "./types/pocketbase-integration-options.type";
 
-export function pocketbaseIntegration({
-  url
-}: {
-  url: string;
-}): AstroIntegration {
+export function pocketbaseIntegration(
+  options: PocketBaseIntegrationOptions
+): AstroIntegration {
+  let eventSource: EventSource | undefined = undefined;
+
   return {
     name: "pocketbase-integration",
     hooks: {
@@ -29,38 +33,27 @@ export function pocketbaseIntegration({
           entrypoint: fileURLToPath(new URL("./middleware", import.meta.url))
         });
       },
-      "astro:server:setup": ({ toolbar, logger, refreshContent }) => {
-        // Setup the listener for the refresh event if a loader is available
-        if (refreshContent) {
-          logger.info("Setting up refresh listener for PocketBase integration");
-          // Listen for the refresh event of the toolbar
-          toolbar.on("astro-integration-pocketbase:refresh", async () => {
-            // Send a loading state to the toolbar
-            toolbar.send("astro-integration-pocketbase:refresh", {
-              loading: true
-            });
+      "astro:server:setup": (setupOptions) => {
+        // Listen for the refresh event of the toolbar
+        handleRefreshCollections(setupOptions);
 
-            // Refresh content loaded by the PocketBase loader
-            await refreshContent({
-              loaders: ["pocketbase-loader"],
-              // TODO: add context to refresh one or all collections
-              context: {}
-            });
-
-            // Reset the loading state in the toolbar
-            toolbar.send("astro-integration-pocketbase:refresh", {
-              loading: false
-            });
-          });
-        }
+        // Subscribe to PocketBase realtime API
+        eventSource = refreshCollectionsRealtime(options, setupOptions);
 
         // Send settings to the toolbar on initialization
-        toolbar.onAppInitialized("pocketbase-entry", () => {
-          toolbar.send("astro-integration-pocketbase:settings", {
-            enabled: !!refreshContent,
-            baseUrl: url
-          });
+        setupOptions.toolbar.onAppInitialized("pocketbase-entry", () => {
+          setupOptions.toolbar.send("astro-integration-pocketbase:settings", {
+            hasContentLoader: !!setupOptions.refreshContent,
+            realtime: !!eventSource,
+            baseUrl: options.url
+          } satisfies ToolbarOptions);
         });
+      },
+      "astro:server:done": () => {
+        // Close the EventSource connection when the server is done
+        if (eventSource) {
+          eventSource.close();
+        }
       }
     }
   };

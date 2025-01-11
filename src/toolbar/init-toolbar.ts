@@ -5,6 +5,7 @@ import type {
 import { createEntity, createHeader, createPlaceholder } from "./dom/";
 import { listenToNavigation } from "./page-navigation-listener";
 import type { Entity } from "./types/entity";
+import type { ToolbarOptions } from "./types/options";
 
 declare global {
   interface Window {
@@ -25,7 +26,7 @@ export async function initToolbar(
 
   const container = document.createElement("astro-dev-toolbar-window");
 
-  const [header, refresh] = createHeader(server);
+  const { header, refresh, toggleContainer } = createHeader(server);
   container.appendChild(header);
 
   // Container for the main content
@@ -101,10 +102,15 @@ export async function initToolbar(
 
   server.on(
     "astro-integration-pocketbase:settings",
-    ({ enabled, baseUrl }: { enabled: boolean; baseUrl: string }) => {
+    ({ hasContentLoader, realtime, baseUrl }: ToolbarOptions) => {
       // Show the refresh button if a loader is available
-      if (enabled) {
+      if (hasContentLoader) {
         refresh.style.display = "unset";
+      }
+
+      // Show the real-time toggle if real-time updates are available
+      if (realtime) {
+        toggleContainer.style.display = "flex";
       }
 
       // Store the base URL for later use
