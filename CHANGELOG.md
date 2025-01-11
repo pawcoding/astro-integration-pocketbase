@@ -1,0 +1,14 @@
+# [1.0.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v0.2.0...v1.0.0) (2025-01-11)
+
+
+### Features
+
+* **realtime:** add realtime refresh for collections ([17e8124](https://github.com/pawcoding/astro-integration-pocketbase/commit/17e81244c07747077226f8c673c63f4e6a8ea402))
+* **toolbar:** add toggle to disable realtime updates ([4660002](https://github.com/pawcoding/astro-integration-pocketbase/commit/466000247d0a89dec0d80be7057a49ec1eab073b))
+* **release:** release first stable version ([47020c6](https://github.com/pawcoding/astro-integration-pocketbase/commit/47020c69e6585a611e68ba3f1c60b2c203fc2e0f))
+* **realtime:** use superuser credentials for realtime updates ([1be1ec7](https://github.com/pawcoding/astro-integration-pocketbase/commit/1be1ec7fc85c90a8ab20dc7851ffc3d76f7d7e60))
+
+
+### BREAKING CHANGES
+
+* **release:** This is the first stable release of this package.
