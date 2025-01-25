@@ -9,6 +9,7 @@ export function pocketbaseIntegration(
   options: PocketBaseIntegrationOptions
 ): AstroIntegration {
   let eventSource: EventSource | undefined = undefined;
+  let initialSetupDone = false;
 
   return {
     name: "pocketbase-integration",
@@ -34,10 +35,16 @@ export function pocketbaseIntegration(
         });
       },
       "astro:server:setup": (setupOptions) => {
-        // Listen for the refresh event of the toolbar
-        handleRefreshCollections(setupOptions);
+        if (!initialSetupDone) {
+          // Listen for the refresh event of the toolbar
+          handleRefreshCollections(setupOptions);
+        }
 
         // Subscribe to PocketBase realtime API
+        if (eventSource) {
+          eventSource.close();
+          eventSource = undefined;
+        }
         eventSource = refreshCollectionsRealtime(options, setupOptions);
 
         // Send settings to the toolbar on initialization
@@ -48,11 +55,15 @@ export function pocketbaseIntegration(
             baseUrl: options.url
           } satisfies ToolbarOptions);
         });
+
+        initialSetupDone = true;
       },
-      "astro:server:done": () => {
+      "astro:server:done": ({ logger }) => {
         // Close the EventSource connection when the server is done
         if (eventSource) {
+          logger.info("Closing EventSource connection");
           eventSource.close();
+          eventSource = undefined;
         }
       }
     }
