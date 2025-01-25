@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.1.0...v1.2.0) (2025-01-25)
+
+
+### Features
+
+* **realtime:** provide advanced settings for realtime subscriptions ([0cb3ee8](https://github.com/pawcoding/astro-integration-pocketbase/commit/0cb3ee811ad88c4973b020128bd301a72278e78e)), closes [pawcoding/astro-integration-pocketbase#10](https://github.com/pawcoding/astro-integration-pocketbase/issues/10)
+
 # [1.1.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.0.0...v1.1.0) (2025-01-11)
 
 
