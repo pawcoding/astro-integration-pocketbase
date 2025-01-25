@@ -2,6 +2,7 @@ import type { BaseIntegrationHooks } from "astro";
 import { EventSource } from "eventsource";
 import type { PocketBaseIntegrationOptions } from "../types/pocketbase-integration-options.type";
 import { getSuperuserToken } from "../utils/get-superuser-token";
+import { mapCollectionsToWatch } from "../utils/map-collections-to-watch";
 
 export function refreshCollectionsRealtime(
   {
@@ -16,9 +17,11 @@ export function refreshCollectionsRealtime(
   }: Parameters<BaseIntegrationHooks["astro:server:setup"]>[0]
 ): EventSource | undefined {
   // Check if collections should be watched
-  if (!collectionsToWatch || collectionsToWatch.length === 0) {
+  const collectionsMap = mapCollectionsToWatch(collectionsToWatch);
+  if (!collectionsMap) {
     return undefined;
   }
+  const remoteCollections = [...collectionsMap.keys()];
 
   // Check if content loader is used
   if (!refreshContent) {
@@ -65,7 +68,7 @@ export function refreshCollectionsRealtime(
   };
 
   // Add event listeners for all collections
-  for (const collection of collectionsToWatch) {
+  for (const collection of remoteCollections) {
     eventSource.addEventListener(`${collection}/*`, async () => {
       // Do not refresh if the refresh is disabled
       if (!refreshEnabled) {
@@ -78,7 +81,7 @@ export function refreshCollectionsRealtime(
         loaders: ["pocketbase-loader"],
         context: {
           source: "astro-integration-pocketbase",
-          collection
+          collection: collectionsMap.get(collection)
         }
       });
     });
@@ -108,7 +111,7 @@ export function refreshCollectionsRealtime(
       },
       body: JSON.stringify({
         clientId: clientId,
-        subscriptions: collectionsToWatch.map((collection) => `${collection}/*`)
+        subscriptions: remoteCollections.map((collection) => `${collection}/*`)
       })
     });
 
@@ -123,7 +126,7 @@ export function refreshCollectionsRealtime(
     if (!wasConnectedOnce) {
       wasConnectedOnce = true;
       logger.info(
-        `Subscribed to PocketBase realtime API. Waiting for updates on ${collectionsToWatch.join(
+        `Subscribed to PocketBase realtime API. Waiting for updates on ${remoteCollections.join(
           ", "
         )}.`
       );
