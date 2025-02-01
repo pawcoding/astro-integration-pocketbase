@@ -1,3 +1,16 @@
+# [1.3.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.2.0...v1.3.0) (2025-02-01)
+
+
+### Bug Fixes
+
+* **toolbar:** improve PocketBase entry prop detection ([be2efbb](https://github.com/pawcoding/astro-integration-pocketbase/commit/be2efbb1bd5aebe9c7dd4cefab4e37062f58ebd7))
+* **setup:** prevent duplicate setup after changing astro config ([147c167](https://github.com/pawcoding/astro-integration-pocketbase/commit/147c167348e2f39135eacde4523ac0cb91f6c78c))
+
+
+### Features
+
+* **realtime:** provide changed entry for realtime events ([ad00829](https://github.com/pawcoding/astro-integration-pocketbase/commit/ad00829f8e8e2687a5b02380fd91a390b78defea)), closes [#9](https://github.com/pawcoding/astro-integration-pocketbase/issues/9)
+
 # [1.2.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.1.0...v1.2.0) (2025-01-25)
 
 
