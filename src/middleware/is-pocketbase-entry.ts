@@ -6,11 +6,9 @@ import { z } from "astro/zod";
 const pocketbaseEntrySchema = z.object({
   id: z.string(),
   data: z.object({
-    id: z.string().length(15),
-    collectionId: z.string().length(15),
-    collectionName: z.string(),
-    updated: z.optional(z.date()),
-    created: z.optional(z.date())
+    id: z.string(),
+    collectionId: z.string(),
+    collectionName: z.string()
   }),
   digest: z.string().length(16),
   collection: z.string()

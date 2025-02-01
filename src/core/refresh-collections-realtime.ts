@@ -69,7 +69,7 @@ export function refreshCollectionsRealtime(
 
   // Add event listeners for all collections
   for (const collection of remoteCollections) {
-    eventSource.addEventListener(`${collection}/*`, async () => {
+    eventSource.addEventListener(`${collection}/*`, async (event) => {
       // Do not refresh if the refresh is disabled
       if (!refreshEnabled) {
         return;
@@ -81,7 +81,8 @@ export function refreshCollectionsRealtime(
         loaders: ["pocketbase-loader"],
         context: {
           source: "astro-integration-pocketbase",
-          collection: collectionsMap.get(collection)
+          collection: collectionsMap.get(collection),
+          data: JSON.parse(event.data)
         }
       });
     });
