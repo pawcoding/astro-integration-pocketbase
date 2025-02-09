@@ -71,7 +71,7 @@ export async function initToolbar(
   // Update the toolbar placement based on the user's preference
   function updateToolbarPlacement(
     placement: "bottom-left" | "bottom-right" | "bottom-center"
-  ) {
+  ): void {
     if (placement === "bottom-left") {
       container.style.left = "16px";
       container.style.right = "unset";

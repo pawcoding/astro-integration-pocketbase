@@ -51,7 +51,7 @@ export function refreshCollectionsRealtime(
   let isConnected = false;
 
   // Log potential errors
-  eventSource.onerror = (error) => {
+  eventSource.onerror = (error): void => {
     isConnected = false;
 
     // Wait for 5 seconds in case of a connection error

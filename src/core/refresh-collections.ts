@@ -16,24 +16,30 @@ export function handleRefreshCollections({
   logger.info("Setting up refresh listener for PocketBase integration");
 
   // Listen for the refresh event of the toolbar
-  toolbar.on("astro-integration-pocketbase:refresh", async () => {
-    // Send a loading state to the toolbar
-    toolbar.send("astro-integration-pocketbase:refresh", {
-      loading: true
-    });
+  toolbar.on(
+    "astro-integration-pocketbase:refresh",
+    async ({ force }: { force: boolean }) => {
+      // Send a loading state to the toolbar
+      toolbar.send("astro-integration-pocketbase:refresh", {
+        loading: true
+      });
 
-    // Refresh content loaded by the PocketBase loader
-    logger.info("Refreshing content loaded by PocketBase loader");
-    await refreshContent({
-      loaders: ["pocketbase-loader"],
-      context: {
-        source: "astro-integration-pocketbase"
-      }
-    });
+      // Refresh content loaded by the PocketBase loader
+      logger.info(
+        `Refreshing ${force ? "all " : ""}content loaded by PocketBase loader`
+      );
+      await refreshContent({
+        loaders: ["pocketbase-loader"],
+        context: {
+          source: "astro-integration-pocketbase",
+          force: force
+        }
+      });
 
-    // Reset the loading state in the toolbar
-    toolbar.send("astro-integration-pocketbase:refresh", {
-      loading: false
-    });
-  });
+      // Reset the loading state in the toolbar
+      toolbar.send("astro-integration-pocketbase:refresh", {
+        loading: false
+      });
+    }
+  );
 }

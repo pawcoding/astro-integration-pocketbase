@@ -48,11 +48,13 @@ export function createHeader(server: ToolbarServerHelpers): HeaderElements {
   const toggleLabel = document.createElement("label");
   toggleLabel.textContent = "Real-time updates";
   toggleLabel.htmlFor = "real-time-toggle";
+  toggleLabel.title = "Enable or disable real-time updates temporarily";
   toggleLabel.style.fontSize = "0.8rem";
   toggleContainer.appendChild(toggleLabel);
 
   const toggle = document.createElement("astro-dev-toolbar-toggle");
   toggle.input.id = "real-time-toggle";
+  toggle.input.title = "Enable or disable real-time updates temporarily";
   // Set the toggle state based on the local storage, default to true
   toggle.input.checked = !(
     localStorage.getItem("astro-integration-pocketbase:real-time") === "false"
@@ -76,10 +78,15 @@ export function createHeader(server: ToolbarServerHelpers): HeaderElements {
   refresh.size = "small";
   refresh.buttonStyle = "green";
   refresh.textContent = "Refresh content";
+  refresh.title = "Right click to force refresh every collection";
   // The refresh button is hidden by default
   refresh.style.display = "none";
   refresh.addEventListener("click", () => {
-    server.send("astro-integration-pocketbase:refresh", true);
+    server.send("astro-integration-pocketbase:refresh", { force: false });
+  });
+  refresh.addEventListener("contextmenu", (event) => {
+    event.preventDefault();
+    server.send("astro-integration-pocketbase:refresh", { force: true });
   });
   actions.appendChild(refresh);
 
