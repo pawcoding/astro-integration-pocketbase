@@ -15,7 +15,7 @@ export function createEntity(data: Entity, baseUrl?: string): DevToolbarCard {
 
   // Add the "View in PocketBase" button
   if (baseUrl) {
-    const url = `${baseUrl}/_/#/collections?collectionId=${data.collectionId}&recordId=${data.id}`;
+    const url = `${baseUrl}/_/#/collections?collection=${data.collectionId}&recordId=${data.id}`;
 
     const viewInPocketbase = document.createElement("astro-dev-toolbar-button");
     viewInPocketbase.size = "small";
