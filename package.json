@@ -1,6 +1,6 @@
 {
   "name": "astro-integration-pocketbase",
-  "version": "1.4.0-next.2",
+  "version": "1.4.0",
   "description": "An Astro integration to support developers working with astro-loader-pocketbase.",
   "license": "MIT",
   "author": "Luis Wolf <development@pawcode.de> (https://pawcode.de)",

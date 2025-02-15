@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.3.0...v1.4.0) (2025-02-15)
+
+
+### Bug Fixes
+
+* **toolbar:** use correct link for viewing entry in PocketBase ([808fb19](https://github.com/pawcoding/astro-integration-pocketbase/commit/808fb1964bb773f02104aa09a4e641364a574c71))
+
+
+### Features
+
+* **toolbar:** add right click to force refresh collections ([30274e6](https://github.com/pawcoding/astro-integration-pocketbase/commit/30274e6b56fd1160425413825c52a1564c734461))
+
 # [1.3.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.2.0...v1.3.0) (2025-02-01)
 
 
