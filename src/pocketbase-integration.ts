@@ -14,7 +14,7 @@ export function pocketbaseIntegration(
   return {
     name: "pocketbase-integration",
     hooks: {
-      "astro:config:setup": ({ addDevToolbarApp, addMiddleware, command }) => {
+      "astro:config:setup": ({ addDevToolbarApp, addMiddleware, command }): void => {
         // This integration is only available in dev mode
         if (command !== "dev") {
           return;
@@ -34,7 +34,7 @@ export function pocketbaseIntegration(
           entrypoint: fileURLToPath(new URL("./middleware", import.meta.url))
         });
       },
-      "astro:server:setup": (setupOptions) => {
+      "astro:server:setup": (setupOptions): void => {
         if (!initialSetupDone) {
           // Listen for the refresh event of the toolbar
           handleRefreshCollections(setupOptions);
@@ -58,7 +58,7 @@ export function pocketbaseIntegration(
 
         initialSetupDone = true;
       },
-      "astro:server:done": ({ logger }) => {
+      "astro:server:done": ({ logger }): void => {
         // Close the EventSource connection when the server is done
         if (eventSource) {
           logger.info("Closing EventSource connection");
