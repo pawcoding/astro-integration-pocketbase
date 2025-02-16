@@ -14,7 +14,11 @@ export function pocketbaseIntegration(
   return {
     name: "pocketbase-integration",
     hooks: {
-      "astro:config:setup": ({ addDevToolbarApp, addMiddleware, command }): void => {
+      "astro:config:setup": ({
+        addDevToolbarApp,
+        addMiddleware,
+        command
+      }): void => {
         // This integration is only available in dev mode
         if (command !== "dev") {
           return;
