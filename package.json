@@ -22,6 +22,8 @@
     "eventsource": "^3.0.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.7.1",
+    "@commitlint/config-conventional": "^19.7.1",
     "@eslint/js": "^9.20.0",
     "@stylistic/eslint-plugin": "^3.1.0",
     "@types/node": "^22.13.4",
