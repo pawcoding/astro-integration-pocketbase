@@ -2,37 +2,6 @@
   "name": "astro-integration-pocketbase",
   "version": "1.4.0",
   "description": "An Astro integration to support developers working with astro-loader-pocketbase.",
-  "license": "MIT",
-  "author": "Luis Wolf <development@pawcode.de> (https://pawcode.de)",
-  "homepage": "https://github.com/pawcoding/astro-integration-pocketbase",
-  "type": "module",
-  "exports": {
-    ".": "./index.ts"
-  },
-  "files": [
-    "src",
-    "index.ts"
-  ],
-  "scripts": {
-    "lint": "npx eslint",
-    "prepare": "husky"
-  },
-  "peerDependencies": {
-    "astro": "^5.0.0",
-    "eventsource": "^3.0.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.19.0",
-    "@stylistic/eslint-plugin": "^3.0.1",
-    "@types/node": "^22.13.0",
-    "astro": "^5.2.3",
-    "eslint": "^9.19.0",
-    "eventsource": "^3.0.5",
-    "globals": "^15.14.0",
-    "husky": "^9.1.7",
-    "typescript": "^5.7.3",
-    "typescript-eslint": "^8.22.0"
-  },
   "keywords": [
     "astro",
     "astro-integration",
@@ -42,5 +11,46 @@
     "dev-overlay",
     "dev-toolbar",
     "tooling"
-  ]
+  ],
+  "homepage": "https://github.com/pawcoding/astro-integration-pocketbase",
+  "license": "MIT",
+  "author": "Luis Wolf <development@pawcode.de> (https://pawcode.de)",
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "files": [
+    "src",
+    "index.ts"
+  ],
+  "scripts": {
+    "format": "npx prettier . --write --cache",
+    "format:check": "npx prettier . --check --cache",
+    "lint": "npx eslint --cache",
+    "lint:fix": "npx eslint --cache --fix",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.7.1",
+    "@commitlint/config-conventional": "^19.7.1",
+    "@eslint/js": "^9.20.0",
+    "@stylistic/eslint-plugin": "^3.1.0",
+    "@types/node": "^22.13.4",
+    "astro": "^5.3.0",
+    "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eventsource": "^3.0.5",
+    "globals": "^15.15.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.4.3",
+    "prettier": "^3.5.1",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-packagejson": "^2.5.8",
+    "typescript": "^5.7.3",
+    "typescript-eslint": "^8.24.0"
+  },
+  "peerDependencies": {
+    "astro": "^5.0.0",
+    "eventsource": "^3.0.0"
+  }
 }
