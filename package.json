@@ -13,6 +13,13 @@
     "tooling"
   ],
   "homepage": "https://github.com/pawcoding/astro-integration-pocketbase",
+  "bugs": {
+    "url": "https://github.com/pawcoding/astro-integration-pocketbase/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pawcoding/astro-integration-pocketbase.git"
+  },
   "license": "MIT",
   "author": "Luis Wolf <development@pawcode.de> (https://pawcode.de)",
   "type": "module",
@@ -52,5 +59,9 @@
   "peerDependencies": {
     "astro": "^5.0.0",
     "eventsource": "^3.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   }
 }
