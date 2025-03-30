@@ -1,98 +1,155 @@
 import type { ToolbarServerHelpers } from "astro";
 import type { DevToolbarButton } from "astro/runtime/client/dev-toolbar/ui-library/button.js";
+import type { DevToolbarWindow } from "astro/runtime/client/dev-toolbar/ui-library/window.js";
 import { default as packageJson } from "../../../package.json";
-
-export interface HeaderElements {
-  header: HTMLElement;
-  refresh: DevToolbarButton;
-  toggleContainer: HTMLDivElement;
-}
+import type { ToolbarOptions } from "../types/options";
 
 /**
  * Creates the header for the PocketBase toolbar.
  */
-export function createHeader(server: ToolbarServerHelpers): HeaderElements {
-  // Create the header
-  const header = document.createElement("header");
-  header.style.display = "grid";
-  header.style.gap = "0.25rem";
-  header.style.gridTemplateColumns = "auto auto 1fr";
+export function createHeader(
+  windowElement: DevToolbarWindow,
+  server: ToolbarServerHelpers,
+  { hasContentLoader, realtime }: ToolbarOptions
+): void {
+  const header = windowElement.querySelector("header");
+  if (!header) {
+    throw new Error("The header element is missing");
+  }
 
-  // Create the title
-  const title = document.createElement("h3");
-  title.style.marginTop = "0.25rem";
-  title.textContent = "PocketBase";
-  header.appendChild(title);
+  header.innerHTML = /* HTML */ `
+    <style>
+      header {
+        display: grid;
+        grid-template-columns: auto auto 1fr;
+        gap: 0.5rem;
+      }
 
-  // Create the version badge
-  const version = document.createElement("astro-dev-toolbar-badge");
-  version.textContent = packageJson.version;
-  version.badgeStyle = "yellow";
-  header.appendChild(version);
+      h1 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        color: #fff;
+        margin: 0;
+        font-size: 22px;
+      }
 
-  // Create the actions container
-  const actions = document.createElement("div");
-  actions.style.display = "flex";
-  actions.style.alignItems = "start";
-  actions.style.justifyContent = "flex-end";
-  actions.style.gap = "0.25rem";
-  header.appendChild(actions);
+      .actions {
+        display: flex;
+        align-items: start;
+        justify-content: flex-end;
+        gap: 0.25rem;
 
-  // Create the real-time toggle
-  const toggleContainer = document.createElement("div");
-  toggleContainer.style.alignItems = "center";
-  // The toggle container is hidden by default
-  toggleContainer.style.display = "none";
-  actions.appendChild(toggleContainer);
+        .toggle-container {
+          display: flex;
+          align-items: center;
 
-  const toggleLabel = document.createElement("label");
-  toggleLabel.textContent = "Real-time updates";
-  toggleLabel.htmlFor = "real-time-toggle";
-  toggleLabel.title = "Enable or disable real-time updates temporarily";
-  toggleLabel.style.fontSize = "0.8rem";
-  toggleContainer.appendChild(toggleLabel);
+          label {
+            font-size: 0.8rem;
+          }
+        }
+      }
+    </style>
 
-  const toggle = document.createElement("astro-dev-toolbar-toggle");
-  toggle.input.id = "real-time-toggle";
-  toggle.input.title = "Enable or disable real-time updates temporarily";
-  // Set the toggle state based on the local storage, default to true
-  toggle.input.checked = !(
-    localStorage.getItem("astro-integration-pocketbase:real-time") === "false"
-  );
-  toggle.input.addEventListener("change", () => {
-    // Store the toggle state in the local storage
-    localStorage.setItem(
-      "astro-integration-pocketbase:real-time",
-      toggle.input.checked.toString()
+    <h1>PocketBase</h1>
+    <astro-dev-toolbar-badge badge-style="yellow">
+      ${packageJson.version}
+    </astro-dev-toolbar-badge>
+
+    <div class="actions">
+      ${realtime
+        ? /* HTML */ `
+            <div class="toggle-container">
+              <label
+                for="real-time"
+                title="Enable or disable real-time updates temporarily"
+              >
+                Real-time updates
+              </label>
+              <!-- real-time-toggle -->
+            </div>
+          `
+        : ""}
+      ${hasContentLoader
+        ? /* HTML */ `
+            <astro-dev-toolbar-button
+              id="refresh-content"
+              size="small"
+              button-style="green"
+              title="Right click to force refresh every collection"
+            >
+              Refresh content
+            </astro-dev-toolbar-button>
+          `
+        : ""}
+    </div>
+  `;
+
+  if (realtime) {
+    // Create the toggle for real-time updates
+    const realTimeToggle = document.createElement("astro-dev-toolbar-toggle");
+    realTimeToggle.input.id = "real-time-toggle";
+    realTimeToggle.input.title =
+      "Enable or disable real-time updates temporarily";
+    // Set the toggle state based on the local storage, default to true
+    realTimeToggle.input.checked = !(
+      localStorage.getItem("astro-integration-pocketbase:real-time") === "false"
     );
+    realTimeToggle.input.addEventListener("change", () => {
+      // Store the toggle state in the local storage
+      localStorage.setItem(
+        "astro-integration-pocketbase:real-time",
+        realTimeToggle.input.checked.toString()
+      );
 
-    // Send the toggle state to the server
-    server.send("astro-integration-pocketbase:real-time", toggle.input.checked);
-  });
-  // Send the initial toggle state to the server
-  server.send("astro-integration-pocketbase:real-time", toggle.input.checked);
-  toggleContainer.appendChild(toggle);
+      // Send the toggle state to the server
+      server.send(
+        "astro-integration-pocketbase:real-time",
+        realTimeToggle.input.checked
+      );
+    });
+    // Send the initial toggle state to the server
+    server.send(
+      "astro-integration-pocketbase:real-time",
+      realTimeToggle.input.checked
+    );
+    windowElement
+      .querySelector(".toggle-container")
+      ?.appendChild(realTimeToggle);
+  }
 
-  // Create the refresh button
-  const refresh = document.createElement("astro-dev-toolbar-button");
-  refresh.size = "small";
-  refresh.buttonStyle = "green";
-  refresh.textContent = "Refresh content";
-  refresh.title = "Right click to force refresh every collection";
-  // The refresh button is hidden by default
-  refresh.style.display = "none";
-  refresh.addEventListener("click", () => {
-    server.send("astro-integration-pocketbase:refresh", { force: false });
-  });
-  refresh.addEventListener("contextmenu", (event) => {
-    event.preventDefault();
-    server.send("astro-integration-pocketbase:refresh", { force: true });
-  });
-  actions.appendChild(refresh);
+  if (hasContentLoader) {
+    // Add click listeners to the refresh button
+    const refresh = windowElement.querySelector(
+      "#refresh-content"
+    ) as DevToolbarButton | null;
+    if (!refresh) {
+      throw new Error("The refresh button is missing");
+    }
 
-  return {
-    header,
-    refresh,
-    toggleContainer
-  };
+    refresh.addEventListener("click", () => {
+      server.send("astro-integration-pocketbase:refresh", { force: false });
+    });
+    refresh.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+      server.send("astro-integration-pocketbase:refresh", { force: true });
+    });
+
+    server.on(
+      "astro-integration-pocketbase:refresh",
+      ({ loading }: { loading?: boolean }) => {
+        // Show loading state while refreshing content
+        if (loading) {
+          refresh.textContent = "Refreshing content...";
+          refresh.buttonStyle = "gray";
+          refresh.style.pointerEvents = "none";
+        } else {
+          refresh.textContent = "Refresh content";
+          refresh.buttonStyle = "green";
+          refresh.style.pointerEvents = "unset";
+        }
+      }
+    );
+  }
 }
