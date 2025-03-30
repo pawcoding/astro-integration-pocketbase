@@ -4,12 +4,10 @@
 export function createPlaceholder(): string {
   return /* HTML */ `
     <style>
-      #placeholder {
-        > div {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
+      #placeholder div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     </style>
 
