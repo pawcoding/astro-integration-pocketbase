@@ -1,41 +1,53 @@
-import type { DevToolbarCard } from "astro/runtime/client/dev-toolbar/ui-library/card.js";
 import type { Entity } from "../types/entity";
 
 /**
- * Creates a card for an entity.
+ * Creates cards for the entities.
  */
-export function createEntity(data: Entity, baseUrl?: string): DevToolbarCard {
-  // Create the main card
-  const main = document.createElement("astro-dev-toolbar-card");
+export function createEntities(data: Array<Entity>, baseUrl: string): string {
+  return /* HTML */ `
+    <style>
+      .entity {
+        position: relative;
 
-  // Create the main content container
-  const content = document.createElement("div");
-  content.style.position = "relative";
-  main.appendChild(content);
+        pre {
+          margin: 0;
+          overflow: auto;
+        }
 
-  // Add the "View in PocketBase" button
-  if (baseUrl) {
-    const url = `${baseUrl}/_/#/collections?collection=${data.collectionId}&recordId=${data.id}`;
+        astro-dev-toolbar-button {
+          position: absolute;
+          top: 0;
+          right: 0;
+        }
+      }
+    </style>
 
-    const viewInPocketbase = document.createElement("astro-dev-toolbar-button");
-    viewInPocketbase.size = "small";
-    viewInPocketbase.buttonStyle = "purple";
-    viewInPocketbase.textContent = "View in PocketBase";
-    viewInPocketbase.style.position = "absolute";
-    viewInPocketbase.style.top = "0";
-    viewInPocketbase.style.right = "0";
-    viewInPocketbase.addEventListener("click", () => {
-      window.open(url, "_blank");
-    });
-    content.appendChild(viewInPocketbase);
-  }
+    ${data.map((entity) => createEntity(entity, baseUrl)).join("")}
+  `;
+}
 
-  // Add the entity data
-  const entity = document.createElement("pre");
-  entity.style.margin = "0";
-  entity.style.overflow = "auto";
-  entity.textContent = JSON.stringify(data, null, 2);
-  content.appendChild(entity);
+/**
+ * Creates a card for a single entity
+ */
+function createEntity(data: Entity, baseUrl: string): string {
+  return /* HTML */ `
+    <astro-dev-toolbar-card>
+      <div class="entity">
+        <pre>${JSON.stringify(data, null, 2).replaceAll(/</g, "&lt;")}</pre>
 
-  return main;
+        ${baseUrl
+          ? /* HTML */ `
+              <astro-dev-toolbar-button
+                size="small"
+                button-style="purple"
+                title="View in PocketBase"
+                onclick="window.open('${baseUrl}/_/#/collections?collection=${data.collectionId}&recordId=${data.id}', '_blank')"
+              >
+                View in PocketBase
+              </astro-dev-toolbar-button>
+            `
+          : ""}
+      </div>
+    </astro-dev-toolbar-card>
+  `;
 }

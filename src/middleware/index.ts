@@ -7,6 +7,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const entities = findEntitiesRecursive(props).map((entity) => entity.data);
 
   const response = await next();
+  const contentType = response.headers.get("content-type");
+  if (!contentType?.includes("text/html")) {
+    // Pass through non-HTML responses unchanged
+    return response;
+  }
+
   const body = await response.text();
 
   // Append the entities to the <head>
