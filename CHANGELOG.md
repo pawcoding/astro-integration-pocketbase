@@ -1,3 +1,10 @@
+## [1.4.2](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.4.1...v1.4.2) (2025-04-05)
+
+
+### Bug Fixes
+
+* **middleware:** check content-type before processing responses to prevent content corruption ([#17](https://github.com/pawcoding/astro-integration-pocketbase/issues/17)) ([960db0a](https://github.com/pawcoding/astro-integration-pocketbase/commit/960db0a200cbf6e980e730685151e1e5494cf051))
+
 ## [1.4.1](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.4.0...v1.4.1) (2025-02-16)
 
 # [1.4.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.3.0...v1.4.0) (2025-02-15)
