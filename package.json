@@ -60,6 +60,7 @@
     "astro": "^5.0.0",
     "eventsource": "^3.0.0"
   },
+  "packageManager": "npm@11.4.2",
   "publishConfig": {
     "access": "public",
     "provenance": true
