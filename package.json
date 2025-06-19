@@ -46,7 +46,7 @@
     "astro": "^5.9.4",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
-    "eventsource": "^3.0.6",
+    "eventsource": "^4.0.0",
     "globals": "^16.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.1.2",
@@ -58,7 +58,7 @@
   },
   "peerDependencies": {
     "astro": "^5.0.0",
-    "eventsource": "^3.0.0"
+    "eventsource": "^4.0.0"
   },
   "packageManager": "npm@11.4.2",
   "publishConfig": {
