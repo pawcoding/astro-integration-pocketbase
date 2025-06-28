@@ -35,7 +35,8 @@
     "format:check": "npx prettier . --check --cache",
     "lint": "npx eslint --cache",
     "lint:fix": "npx eslint --cache --fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "typecheck": "npx tsc --noEmit"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",

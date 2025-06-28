@@ -45,6 +45,10 @@ jobs:
       - name: 🧹 Check format
         run: npm run format:check
 
+      # Type check
+      - name: 🧪 Type check
+        run: npm run typecheck
+
       # Create release
       - name: 🚀 Create release
         if: github.repository == 'pawcoding/astro-integration-pocketbase'
