@@ -60,7 +60,9 @@ pocketbaseIntegration({
   // Superuser credentials for restricted collections (optional)
   superuserCredentials: {
     email: "<superuser-email>",
-    password: "<superuser-password>"
+    password: "<superuser-password>",
+    // or
+    impersonateToken: "<superuser-impersonate-token>"
   }
 });
 ```
@@ -131,8 +133,8 @@ The integration will automatically detect PocketBase entries in the props and di
 
 ## All options
 
-| Option                 | Type                                                     | Required | Description                                                                                                                   |
-| ---------------------- | -------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `url`                  | `string`                                                 | x        | The URL of your PocketBase instance.                                                                                          |
-| `collectionsToWatch`   | `Array<string> \| Record<string, true \| Array<string>>` |          | Collections to watch for changes.                                                                                             |
-| `superuserCredentials` | `{ email: string, password: string }`                    |          | The email and password of a superuser of the PocketBase instance. This is used for realtime updates of restricted collection. |
+| Option                 | Type                                                                  | Required | Description                                                                                                                                        |
+| ---------------------- | --------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `url`                  | `string`                                                              | x        | The URL of your PocketBase instance.                                                                                                               |
+| `collectionsToWatch`   | `Array<string> \| Record<string, true \| Array<string>>`              |          | Collections to watch for changes.                                                                                                                  |
+| `superuserCredentials` | `{ email: string, password: string } \| { impersonateToken: string }` |          | The email and password or impersonate token of a superuser of the PocketBase instance. This is used for realtime updates of restricted collection. |
