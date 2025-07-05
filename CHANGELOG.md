@@ -1,3 +1,17 @@
+# [2.0.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.4.5...v2.0.0) (2025-07-05)
+
+
+### Features
+
+* **deps:** update eventsource ([c34523c](https://github.com/pawcoding/astro-integration-pocketbase/commit/c34523c7f4d4de1871497c5cac07a8d5b7211195))
+
+
+### BREAKING CHANGES
+
+* **deps:** This updates the eventsource package to v4.0.0,
+which dropped support for Node.js v18. Since this is a peer dependency,
+this package is also bumped a major version.
+
 ## [1.4.5](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.4.4...v1.4.5) (2025-06-19)
 
 ## [1.4.4](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.4.3...v1.4.4) (2025-06-18)
