@@ -96,11 +96,15 @@ export function refreshCollectionsRealtime(
     // Get the superuser token if credentials are available
     let superuserToken: string | undefined;
     if (superuserCredentials) {
-      superuserToken = await getSuperuserToken(
-        url,
-        superuserCredentials,
-        logger
-      );
+      if ("impersonateToken" in superuserCredentials) {
+        superuserToken = superuserCredentials.impersonateToken;
+      } else {
+        superuserToken = await getSuperuserToken(
+          url,
+          superuserCredentials,
+          logger
+        );
+      }
     }
 
     // Subscribe to the PocketBase realtime API
