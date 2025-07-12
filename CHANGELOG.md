@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.0.0...v2.1.0) (2025-07-12)
+
+
+### Features
+
+* **auth:** authenticate loader with impersonate token ([e84c23c](https://github.com/pawcoding/astro-integration-pocketbase/commit/e84c23c77185d26746ccdad453abc0b14cd8c94f))
+
 # [2.0.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v1.4.5...v2.0.0) (2025-07-05)
 
 
