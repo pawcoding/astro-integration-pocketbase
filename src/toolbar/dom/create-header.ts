@@ -114,9 +114,7 @@ export function createHeader(
       "astro-integration-pocketbase:real-time",
       realTimeToggle.input.checked
     );
-    windowElement
-      .querySelector(".toggle-container")
-      ?.appendChild(realTimeToggle);
+    windowElement.querySelector(".toggle-container")?.append(realTimeToggle);
   }
 
   if (hasContentLoader) {
