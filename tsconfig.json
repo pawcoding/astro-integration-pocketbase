@@ -4,6 +4,8 @@
   "exclude": ["dist"],
   "compilerOptions": {
     "jsx": "preserve",
-    "module": "ES2020"
+    "module": "ES2020",
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true
   }
 }

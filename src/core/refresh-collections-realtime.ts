@@ -4,6 +4,9 @@ import type { PocketBaseIntegrationOptions } from "../types/pocketbase-integrati
 import { getSuperuserToken } from "../utils/get-superuser-token";
 import { mapCollectionsToWatch } from "../utils/map-collections-to-watch";
 
+// This function is not as complex as it seems, but uses a lot of shared state
+// that makes it hard to split into smaller functions.
+// oxlint-disable-next-line max-lines-per-function
 export function refreshCollectionsRealtime(
   {
     url,
@@ -51,7 +54,8 @@ export function refreshCollectionsRealtime(
   let isConnected = false;
 
   // Log potential errors
-  eventSource.onerror = (error): void => {
+  // oxlint-disable-next-line prefer-await-to-callbacks
+  eventSource.addEventListener("error", (error) => {
     isConnected = false;
 
     // Wait for 5 seconds in case of a connection error
@@ -65,7 +69,7 @@ export function refreshCollectionsRealtime(
         `Error while connecting to PocketBase realtime API: ${error.type}`
       );
     }, 5000);
-  };
+  });
 
   // Add event listeners for all collections
   for (const collection of remoteCollections) {

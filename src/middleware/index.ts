@@ -1,5 +1,6 @@
 import { defineMiddleware } from "astro/middleware";
-import { isPocketbaseEntry, type PocketBaseEntry } from "./is-pocketbase-entry";
+import type { PocketBaseEntry } from "./is-pocketbase-entry";
+import { isPocketbaseEntry } from "./is-pocketbase-entry";
 
 export const onRequest = defineMiddleware(async (context, next) => {
   // Look for entities given as props to the page
