@@ -7,6 +7,7 @@ import type { ToolbarOptions } from "../types/options";
 /**
  * Creates the header for the PocketBase toolbar.
  */
+// oxlint-disable-next-line max-lines-per-function
 export function createHeader(
   windowElement: DevToolbarWindow,
   server: ToolbarServerHelpers,
