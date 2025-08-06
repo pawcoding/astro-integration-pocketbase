@@ -1,0 +1,54 @@
+name: 🧪 Test code
+# Run this on every push except master and next
+on:
+  push:
+    branches:
+      - "**"
+      - "!master"
+      - "!next"
+
+env:
+  HUSKY: 0
+
+jobs:
+  test:
+    # Use the latest version of Ubuntu
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    steps:
+      # Checkout repository
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      # Setup Node
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: "npm"
+
+      # Enable corepack
+      - name: ⚙️ Enable corepack
+        run: corepack enable && corepack enable npm
+
+      # Install dependencies
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      # Lint code
+      - name: 🧹 Lint code
+        run: npm run lint
+
+      # Check format
+      - name: 🧹 Check format
+        run: npm run format:check
+
+      # Type check
+      - name: 🧪 Type check
+        run: npm run typecheck
