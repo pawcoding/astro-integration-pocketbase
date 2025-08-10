@@ -33,7 +33,7 @@ function createEntity(data: Entity, baseUrl: string): string {
   return /* HTML */ `
     <astro-dev-toolbar-card>
       <div class="entity">
-        <pre>${JSON.stringify(data, null, 2).replaceAll(/</g, "&lt;")}</pre>
+        <pre>${JSON.stringify(data, undefined, 2).replaceAll("<", "&lt;")}</pre>
 
         ${baseUrl
           ? /* HTML */ `

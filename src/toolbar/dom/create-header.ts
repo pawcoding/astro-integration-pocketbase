@@ -7,6 +7,7 @@ import type { ToolbarOptions } from "../types/options";
 /**
  * Creates the header for the PocketBase toolbar.
  */
+// oxlint-disable-next-line max-lines-per-function
 export function createHeader(
   windowElement: DevToolbarWindow,
   server: ToolbarServerHelpers,
@@ -114,9 +115,7 @@ export function createHeader(
       "astro-integration-pocketbase:real-time",
       realTimeToggle.input.checked
     );
-    windowElement
-      .querySelector(".toggle-container")
-      ?.appendChild(realTimeToggle);
+    windowElement.querySelector(".toggle-container")?.append(realTimeToggle);
   }
 
   if (hasContentLoader) {

@@ -6,9 +6,11 @@ export function pushToMapArray<TKey, TArray>(
   key: TKey,
   value: TArray
 ): void {
-  if (map.has(key)) {
-    map.get(key)!.push(value);
-  } else {
-    map.set(key, [value]);
+  const array = map.get(key);
+  if (array) {
+    array.push(value);
+    return;
   }
+
+  map.set(key, [value]);
 }

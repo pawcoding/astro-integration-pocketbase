@@ -1,5 +1,5 @@
 import type { AstroIntegration } from "astro";
-import { EventSource } from "eventsource";
+import type { EventSource } from "eventsource";
 import { fileURLToPath } from "node:url";
 import { handleRefreshCollections, refreshCollectionsRealtime } from "./core";
 import type { ToolbarOptions } from "./toolbar/types/options";
