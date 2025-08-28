@@ -1,18 +1,11 @@
-import type { BaseIntegrationHooks } from "astro";
+import type { AstroIntegrationLogger, BaseIntegrationHooks } from "astro";
 import { EventSource } from "eventsource";
 import type { PocketBaseIntegrationOptions } from "../types/pocketbase-integration-options.type";
 import { getSuperuserToken } from "../utils/get-superuser-token";
 import { mapCollectionsToWatch } from "../utils/map-collections-to-watch";
 
-// This function is not as complex as it seems, but uses a lot of shared state
-// that makes it hard to split into smaller functions.
-// oxlint-disable-next-line max-lines-per-function
 export function refreshCollectionsRealtime(
-  {
-    url,
-    superuserCredentials,
-    collectionsToWatch
-  }: PocketBaseIntegrationOptions,
+  options: PocketBaseIntegrationOptions,
   {
     logger,
     refreshContent,
@@ -20,7 +13,7 @@ export function refreshCollectionsRealtime(
   }: Parameters<BaseIntegrationHooks["astro:server:setup"]>[0]
 ): EventSource | undefined {
   // Check if collections should be watched
-  const collectionsMap = mapCollectionsToWatch(collectionsToWatch);
+  const collectionsMap = mapCollectionsToWatch(options.collectionsToWatch);
   if (!collectionsMap) {
     return undefined;
   }
@@ -49,7 +42,7 @@ export function refreshCollectionsRealtime(
     refreshEnabled = enabled;
   });
 
-  const eventSource = new EventSource(`${url}/api/realtime`);
+  const eventSource = new EventSource(`${options.url}/api/realtime`);
   let wasConnectedOnce = false;
   let isConnected = false;
 
@@ -94,55 +87,74 @@ export function refreshCollectionsRealtime(
 
   // Add event listener for the connection event
   eventSource.addEventListener("PB_CONNECT", async (event) => {
-    // Extract the clientId
-    const clientId = event.lastEventId;
-
-    // Get the superuser token if credentials are available
-    let superuserToken: string | undefined;
-    if (superuserCredentials) {
-      if ("impersonateToken" in superuserCredentials) {
-        superuserToken = superuserCredentials.impersonateToken;
-      } else {
-        superuserToken = await getSuperuserToken(
-          url,
-          superuserCredentials,
-          logger
-        );
-      }
-    }
-
-    // Subscribe to the PocketBase realtime API
-    const result = await fetch(`${url}/api/realtime`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: superuserToken || ""
-      },
-      body: JSON.stringify({
-        clientId: clientId,
-        subscriptions: remoteCollections.map((collection) => `${collection}/*`)
-      })
-    });
-
-    // Log the connection status
-    if (!result.ok) {
-      logger.error(
-        `Error while subscribing to PocketBase realtime API: ${result.status}`
-      );
-      return;
-    }
-
-    if (!wasConnectedOnce) {
+    isConnected = await handleConnectEvent(
+      event,
+      remoteCollections,
+      wasConnectedOnce,
+      options,
+      logger
+    );
+    if (isConnected) {
       wasConnectedOnce = true;
-      logger.info(
-        `Subscribed to PocketBase realtime API. Waiting for updates on ${remoteCollections.join(
-          ", "
-        )}.`
-      );
     }
-
-    isConnected = true;
   });
 
   return eventSource;
+}
+
+async function handleConnectEvent(
+  event: MessageEvent<void>,
+  remoteCollections: Array<string>,
+  wasConnectedOnce: boolean,
+  options: PocketBaseIntegrationOptions,
+  logger: AstroIntegrationLogger
+): Promise<boolean> {
+  // Extract the clientId
+  const clientId = event.lastEventId;
+
+  // Get the superuser token if credentials are available
+  let superuserToken: string | undefined;
+  if (options.superuserCredentials) {
+    if ("impersonateToken" in options.superuserCredentials) {
+      superuserToken = options.superuserCredentials.impersonateToken;
+    } else {
+      superuserToken = await getSuperuserToken(
+        options.url,
+        options.superuserCredentials,
+        logger
+      );
+    }
+  }
+
+  // Subscribe to the PocketBase realtime API
+  const result = await fetch(`${options.url}/api/realtime`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: superuserToken || ""
+    },
+    body: JSON.stringify({
+      clientId: clientId,
+      subscriptions: remoteCollections.map((collection) => `${collection}/*`)
+    })
+  });
+
+  // Log the connection status
+  if (!result.ok) {
+    logger.error(
+      `Error while subscribing to PocketBase realtime API: ${result.status}`
+    );
+    return false;
+  }
+
+  if (!wasConnectedOnce) {
+    wasConnectedOnce = true;
+    logger.info(
+      `Subscribed to PocketBase realtime API. Waiting for updates on ${remoteCollections.join(
+        ", "
+      )}.`
+    );
+  }
+
+  return true;
 }
