@@ -148,7 +148,6 @@ async function handleConnectEvent(
   }
 
   if (!wasConnectedOnce) {
-    wasConnectedOnce = true;
     logger.info(
       `Subscribed to PocketBase realtime API. Waiting for updates on ${remoteCollections.join(
         ", "

@@ -32,7 +32,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 function findEntitiesRecursive(data: unknown): Array<PocketBaseEntry> {
   // Check if the data is an array and search for entities in each element
   if (Array.isArray(data)) {
-    return data.flatMap(findEntitiesRecursive);
+    return data.flatMap((item) => findEntitiesRecursive(item));
   }
 
   if (typeof data === "object" && data !== null) {
