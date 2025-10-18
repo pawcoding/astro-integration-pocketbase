@@ -4,7 +4,7 @@
   "exclude": ["dist"],
   "compilerOptions": {
     "jsx": "preserve",
-    "module": "ES2020",
+    "module": "ES2022",
     "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true
   }
