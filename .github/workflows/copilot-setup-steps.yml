@@ -39,3 +39,19 @@ jobs:
       # Install dependencies
       - name: 📦 Install dependencies
         run: npm ci
+
+      # Setup PocketBase
+      - name: 🗄️ Download and setup PocketBase
+        run: npm run test:e2e:setup
+
+      # Start PocketBase
+      - name: 🚀 Start PocketBase
+        run: ./.pocketbase/pocketbase serve &
+
+      # Wait for PocketBase to be ready
+      - name: ⏳ Wait for PocketBase
+        run: |
+          until curl -s --fail http://localhost:8090/api/health; do
+            echo 'Waiting for PocketBase...'
+            sleep 5
+          done
