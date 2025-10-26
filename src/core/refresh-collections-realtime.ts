@@ -11,7 +11,10 @@ export function refreshCollectionsRealtime(
     logger,
     refreshContent,
     toolbar
-  }: Parameters<BaseIntegrationHooks["astro:server:setup"]>[0]
+  }: Pick<
+    Parameters<BaseIntegrationHooks["astro:server:setup"]>[0],
+    "logger" | "refreshContent" | "toolbar"
+  >
 ): EventSource | undefined {
   // Check if collections should be watched
   const collectionsMap = mapCollectionsToWatch(options.collectionsToWatch);
