@@ -242,6 +242,7 @@
         "eslint/max-lines": "off",
         "eslint/max-lines-per-function": "off",
         "eslint/max-nested-callbacks": "off",
+        "promise/avoid-new": "off",
         "typescript/no-unsafe-argument": "off",
         "typescript/no-unsafe-assignment": "off",
         "typescript/no-unsafe-call": "off",
