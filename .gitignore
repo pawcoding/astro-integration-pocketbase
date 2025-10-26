@@ -1,6 +1,7 @@
 # build output
 dist/
 .eslintcache
+coverage/
 
 # generated types
 .astro/
@@ -24,3 +25,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# PocketBase folder
+.pocketbase/
