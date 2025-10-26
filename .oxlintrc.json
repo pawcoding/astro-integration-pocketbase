@@ -177,7 +177,6 @@
     "promise/avoid-new": "warn",
     "promise/no-nesting": "warn",
     "promise/no-return-wrap": "error",
-    "promise/prefer-await-to-callbacks": "warn",
     "promise/prefer-await-to-then": "warn",
     "promise/prefer-catch": "warn",
     "typescript/array-type": [

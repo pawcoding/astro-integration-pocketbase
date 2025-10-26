@@ -1,5 +1,6 @@
 import type { AstroIntegrationLogger, BaseIntegrationHooks } from "astro";
 import { EventSource } from "eventsource";
+import { TOOLBAR_EVENT } from "../toolbar/constants/toolbar-events";
 import type { PocketBaseIntegrationOptions } from "../types/pocketbase-integration-options.type";
 import { getSuperuserToken } from "../utils/get-superuser-token";
 import { mapCollectionsToWatch } from "../utils/map-collections-to-watch";
@@ -38,7 +39,7 @@ export function refreshCollectionsRealtime(
 
   let refreshEnabled = true;
   // Enable or disable real-time updates via the toolbar
-  toolbar.on("astro-integration-pocketbase:real-time", (enabled: boolean) => {
+  toolbar.on(TOOLBAR_EVENT.REAL_TIME, (enabled: boolean) => {
     refreshEnabled = enabled;
   });
 
@@ -47,7 +48,6 @@ export function refreshCollectionsRealtime(
   let isConnected = false;
 
   // Log potential errors
-  // oxlint-disable-next-line prefer-await-to-callbacks
   eventSource.addEventListener("error", (error) => {
     isConnected = false;
 

@@ -8,6 +8,7 @@ export default defineConfig({
       include: ["src/**/*.ts"],
       exclude: [
         "src/**/types/**/*.ts",
+        "src/**/constants/**/*.ts",
         "index.ts",
         "src/pocketbase-integration.ts"
       ]

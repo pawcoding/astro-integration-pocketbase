@@ -2,6 +2,7 @@ import type { AstroIntegration } from "astro";
 import type { EventSource } from "eventsource";
 import { fileURLToPath } from "node:url";
 import { handleRefreshCollections, refreshCollectionsRealtime } from "./core";
+import { TOOLBAR_EVENT } from "./toolbar/constants/toolbar-events";
 import type { ToolbarOptions } from "./toolbar/types/options";
 import type { PocketBaseIntegrationOptions } from "./types/pocketbase-integration-options.type";
 
@@ -53,7 +54,7 @@ export function pocketbaseIntegration(
 
         // Send settings to the toolbar on initialization
         setupOptions.toolbar.onAppInitialized("pocketbase-entry", () => {
-          setupOptions.toolbar.send("astro-integration-pocketbase:settings", {
+          setupOptions.toolbar.send(TOOLBAR_EVENT.SETTINGS, {
             hasContentLoader: !!setupOptions.refreshContent,
             realtime: !!eventSource,
             baseUrl: options.url
