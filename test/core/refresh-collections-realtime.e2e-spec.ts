@@ -12,9 +12,11 @@ import {
   vi
 } from "vitest";
 import { refreshCollectionsRealtime } from "../../src/core";
+import { TOOLBAR_EVENT } from "../../src/toolbar/constants/toolbar-events";
 import { createIntegrationOptions } from "../_mocks/create-integration-options";
 import { createToolbarMock } from "../_mocks/create-toolbar-mock";
 import { deleteCollection } from "../_mocks/delete-collection";
+import { deleteEntry } from "../_mocks/delete-entry";
 import { insertCollection } from "../_mocks/insert-collection";
 import { insertEntry } from "../_mocks/insert-entry";
 import { LoggerMock } from "../_mocks/logger.mock";
@@ -135,6 +137,54 @@ describe("refreshCollectionsRealtime", async () => {
           data: expect.anything()
         }
       });
+    });
+
+    it("should not refresh when realtime updates are disabled", async () => {
+      mctw.mapCollectionsToWatch = vi
+        .fn()
+        .mockReturnValueOnce(new Map([[collectionName, ["test"]]]));
+
+      // Create the SSE connection
+      const result = refreshCollectionsRealtime(options, context);
+      assert(!!result, "EventSource was not created");
+
+      // Wait until connected
+      await waitUntilConnected(result);
+      expect(context.refreshContent).not.toHaveBeenCalled();
+
+      // Disable realtime updates
+      toolbarMock.send(TOOLBAR_EVENT.REAL_TIME, false);
+
+      // Insert an entry to trigger the update
+      const entry = await insertEntry(
+        {},
+        options.url,
+        collectionName,
+        superuserToken
+      );
+
+      // Wait until the realtime update is received
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      expect(context.refreshContent).not.toHaveBeenCalled();
+
+      // Enable realtime updates
+      toolbarMock.send(TOOLBAR_EVENT.REAL_TIME, true);
+
+      await deleteEntry(
+        entry.id as string,
+        options.url,
+        collectionName,
+        superuserToken
+      );
+
+      // Wait until the refreshContent method was called
+      await new Promise((resolve) => setTimeout(resolve, 100));
+      vi.waitFor(() => {
+        expect(context.refreshContent).toHaveBeenCalled();
+      });
+
+      expect(context.refreshContent).toHaveBeenCalledOnce();
     });
   });
 });
