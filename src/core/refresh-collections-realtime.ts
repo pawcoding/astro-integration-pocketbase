@@ -66,38 +66,45 @@ export function refreshCollectionsRealtime(
 
   // Add event listeners for all collections
   for (const collection of remoteCollections) {
-    eventSource.addEventListener(`${collection}/*`, async (event) => {
-      // Do not refresh if the refresh is disabled
-      if (!refreshEnabled) {
-        return;
-      }
-
-      // Refresh the content
-      logger.info(`Received update for ${collection}. Refreshing content...`);
-      await refreshContent({
-        loaders: ["pocketbase-loader"],
-        context: {
-          source: "astro-integration-pocketbase",
-          collection: collectionsMap.get(collection),
-          data: JSON.parse(event.data)
+    eventSource.addEventListener(
+      `${collection}/*`,
+      async (event: MessageEvent<string>) => {
+        // Do not refresh if the refresh is disabled
+        if (!refreshEnabled) {
+          return;
         }
-      });
-    });
+
+        // Refresh the content
+        logger.info(`Received update for ${collection}. Refreshing content...`);
+        await refreshContent({
+          loaders: ["pocketbase-loader"],
+          context: {
+            source: "astro-integration-pocketbase",
+            collection: collectionsMap.get(collection),
+            // oxlint-disable-next-line @typescript-eslint/no-unsafe-assignment
+            data: JSON.parse(event.data)
+          }
+        });
+      }
+    );
   }
 
   // Add event listener for the connection event
-  eventSource.addEventListener("PB_CONNECT", async (event) => {
-    isConnected = await handleConnectEvent(
-      event,
-      remoteCollections,
-      wasConnectedOnce,
-      options,
-      logger
-    );
-    if (isConnected) {
-      wasConnectedOnce = true;
+  eventSource.addEventListener(
+    "PB_CONNECT",
+    async (event: MessageEvent<void>) => {
+      isConnected = await handleConnectEvent(
+        event,
+        remoteCollections,
+        wasConnectedOnce,
+        options,
+        logger
+      );
+      if (isConnected) {
+        wasConnectedOnce = true;
+      }
     }
-  });
+  );
 
   return eventSource;
 }
