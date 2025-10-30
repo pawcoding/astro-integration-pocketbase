@@ -1,4 +1,5 @@
 import type { BaseIntegrationHooks } from "astro";
+import { TOOLBAR_EVENT } from "../toolbar/constants/toolbar-events";
 
 /**
  * Listen for the refresh event of the toolbar.
@@ -8,7 +9,10 @@ export function handleRefreshCollections({
   toolbar,
   refreshContent,
   logger
-}: Parameters<BaseIntegrationHooks["astro:server:setup"]>[0]): void {
+}: Pick<
+  Parameters<BaseIntegrationHooks["astro:server:setup"]>[0],
+  "toolbar" | "refreshContent" | "logger"
+>): void {
   if (!refreshContent) {
     return;
   }
@@ -16,30 +20,27 @@ export function handleRefreshCollections({
   logger.info("Setting up refresh listener for PocketBase integration");
 
   // Listen for the refresh event of the toolbar
-  toolbar.on(
-    "astro-integration-pocketbase:refresh",
-    async ({ force }: { force: boolean }) => {
-      // Send a loading state to the toolbar
-      toolbar.send("astro-integration-pocketbase:refresh", {
-        loading: true
-      });
+  toolbar.on(TOOLBAR_EVENT.REFRESH, async ({ force }: { force: boolean }) => {
+    // Send a loading state to the toolbar
+    toolbar.send(TOOLBAR_EVENT.REFRESH, {
+      loading: true
+    });
 
-      // Refresh content loaded by the PocketBase loader
-      logger.info(
-        `Refreshing ${force ? "all " : ""}content loaded by PocketBase loader`
-      );
-      await refreshContent({
-        loaders: ["pocketbase-loader"],
-        context: {
-          source: "astro-integration-pocketbase",
-          force: force
-        }
-      });
+    // Refresh content loaded by the PocketBase loader
+    logger.info(
+      `Refreshing ${force ? "all " : ""}content loaded by PocketBase loader`
+    );
+    await refreshContent({
+      loaders: ["pocketbase-loader"],
+      context: {
+        source: "astro-integration-pocketbase",
+        force: force
+      }
+    });
 
-      // Reset the loading state in the toolbar
-      toolbar.send("astro-integration-pocketbase:refresh", {
-        loading: false
-      });
-    }
-  );
+    // Reset the loading state in the toolbar
+    toolbar.send(TOOLBAR_EVENT.REFRESH, {
+      loading: false
+    });
+  });
 }

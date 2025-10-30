@@ -1,11 +1,15 @@
 name: 🧪 Test code
-# Run this on every push except master and next
+
 on:
+  # Run this on every push except master and next
   push:
     branches:
       - "**"
       - "!master"
       - "!next"
+  # Run this every week to make sure the latest PocketBase version still works
+  schedule:
+    - cron: "0 4 * * 6"
 
 env:
   HUSKY: 0
@@ -51,3 +55,27 @@ jobs:
       # Type check
       - name: 🧪 Type check
         run: npm run typecheck
+
+      # Run tests
+      - name: 🧪 Run unit tests
+        run: npm run test:unit
+
+      # Setup PocketBase
+      - name: 🗄️ Download and setup PocketBase
+        run: npm run test:e2e:setup
+
+      # Start PocketBase
+      - name: 🚀 Start PocketBase
+        run: ./.pocketbase/pocketbase serve &
+
+      # Wait for PocketBase to be ready
+      - name: ⏳ Wait for PocketBase
+        run: |
+          until curl -s --fail http://localhost:8090/api/health; do
+            echo 'Waiting for PocketBase...'
+            sleep 5
+          done
+
+      # Run tests
+      - name: 🧪 Run e2e tests
+        run: npm run test:e2e

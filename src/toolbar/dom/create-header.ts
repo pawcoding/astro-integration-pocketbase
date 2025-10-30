@@ -2,6 +2,7 @@ import type { ToolbarServerHelpers } from "astro";
 import type { DevToolbarButton } from "astro/runtime/client/dev-toolbar/ui-library/button.js";
 import type { DevToolbarWindow } from "astro/runtime/client/dev-toolbar/ui-library/window.js";
 import { default as packageJson } from "../../../package.json";
+import { TOOLBAR_EVENT } from "../constants/toolbar-events";
 import type { ToolbarOptions } from "../types/options";
 
 /**
@@ -105,16 +106,10 @@ export function createHeader(
       );
 
       // Send the toggle state to the server
-      server.send(
-        "astro-integration-pocketbase:real-time",
-        realTimeToggle.input.checked
-      );
+      server.send(TOOLBAR_EVENT.REAL_TIME, realTimeToggle.input.checked);
     });
     // Send the initial toggle state to the server
-    server.send(
-      "astro-integration-pocketbase:real-time",
-      realTimeToggle.input.checked
-    );
+    server.send(TOOLBAR_EVENT.REAL_TIME, realTimeToggle.input.checked);
     windowElement.querySelector(".toggle-container")?.append(realTimeToggle);
   }
 
@@ -128,27 +123,24 @@ export function createHeader(
     }
 
     refresh.addEventListener("click", () => {
-      server.send("astro-integration-pocketbase:refresh", { force: false });
+      server.send(TOOLBAR_EVENT.REFRESH, { force: false });
     });
     refresh.addEventListener("contextmenu", (event) => {
       event.preventDefault();
-      server.send("astro-integration-pocketbase:refresh", { force: true });
+      server.send(TOOLBAR_EVENT.REFRESH, { force: true });
     });
 
-    server.on(
-      "astro-integration-pocketbase:refresh",
-      ({ loading }: { loading?: boolean }) => {
-        // Show loading state while refreshing content
-        if (loading) {
-          refresh.textContent = "Refreshing content...";
-          refresh.buttonStyle = "gray";
-          refresh.style.pointerEvents = "none";
-        } else {
-          refresh.textContent = "Refresh content";
-          refresh.buttonStyle = "green";
-          refresh.style.pointerEvents = "unset";
-        }
+    server.on(TOOLBAR_EVENT.REFRESH, ({ loading }: { loading?: boolean }) => {
+      // Show loading state while refreshing content
+      if (loading) {
+        refresh.textContent = "Refreshing content...";
+        refresh.buttonStyle = "gray";
+        refresh.style.pointerEvents = "none";
+      } else {
+        refresh.textContent = "Refresh content";
+        refresh.buttonStyle = "green";
+        refresh.style.pointerEvents = "unset";
       }
-    );
+    });
   }
 }

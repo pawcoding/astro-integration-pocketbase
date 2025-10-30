@@ -7,6 +7,7 @@ import type {
   ToolbarAppEventTarget,
   ToolbarServerHelpers
 } from "astro/runtime/client/dev-toolbar/helpers.js";
+import { TOOLBAR_EVENT } from "./constants/toolbar-events";
 import { createEntities, createHeader, createPlaceholder } from "./dom";
 import type { Entity } from "./types/entity";
 import type { ToolbarOptions } from "./types/options";
@@ -33,13 +34,10 @@ export function initToolbar(
   };
 
   // Update the options and refresh the toolbar
-  server.on(
-    "astro-integration-pocketbase:settings",
-    (updatedOptions: ToolbarOptions) => {
-      options = updatedOptions;
-      createPocketBaseWindow();
-    }
-  );
+  server.on(TOOLBAR_EVENT.SETTINGS, (updatedOptions: ToolbarOptions) => {
+    options = updatedOptions;
+    createPocketBaseWindow();
+  });
 
   // Create the window (for every page navigation)
   createPocketBaseWindow();
