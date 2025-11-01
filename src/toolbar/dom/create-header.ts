@@ -120,9 +120,8 @@ export function createHeader(
 
   if (hasContentLoader) {
     // Add click listeners to the refresh button
-    const refresh = windowElement.querySelector(
-      "#refresh-content"
-    ) as DevToolbarButton | null;
+    const refresh =
+      windowElement.querySelector<DevToolbarButton>("#refresh-content");
     if (!refresh) {
       throw new Error("The refresh button is missing");
     }
