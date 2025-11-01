@@ -1,3 +1,11 @@
+## [2.1.4](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.3...v2.1.4) (2025-11-01)
+
+
+### Bug Fixes
+
+* fix type-aware linting problems ([c2d9223](https://github.com/pawcoding/astro-integration-pocketbase/commit/c2d9223e4e2e7ff0b92c43f3f23608334b512ae0))
+* **superuser-token:** retry authentication after hitting rate limit ([ecbca18](https://github.com/pawcoding/astro-integration-pocketbase/commit/ecbca18215af084e53a098f9124ae879eea2b66e))
+
 ## [2.1.3](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.2...v2.1.3) (2025-09-20)
 
 ## [2.1.2](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.1...v2.1.2) (2025-08-30)
