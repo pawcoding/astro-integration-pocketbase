@@ -1,3 +1,5 @@
+## [2.1.5](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.4...v2.1.5) (2025-11-22)
+
 ## [2.1.4](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.3...v2.1.4) (2025-11-01)
 
 
