@@ -31,12 +31,12 @@
     "index.ts"
   ],
   "scripts": {
-    "format": "npx prettier . --write --cache",
-    "format:check": "npx prettier . --check --cache",
+    "format": "prettier . --write --cache --cache-location=./.prettier-cache --experimental-cli",
+    "format:check": "prettier . --check --cache --cache-location=./.prettier-cache --experimental-cli",
     "lint": "oxlint --type-aware",
     "lint:fix": "oxlint --type-aware --fix",
     "prepare": "husky",
-    "typecheck": "npx tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@commitlint/cli": "20.2.0",
