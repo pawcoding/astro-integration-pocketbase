@@ -42,7 +42,7 @@
     "@commitlint/cli": "20.2.0",
     "@commitlint/config-conventional": "20.2.0",
     "@types/node": "24.10.1",
-    "astro": "5.16.5",
+    "astro": "6.0.0-alpha.1",
     "eventsource": "4.1.0",
     "globals": "16.5.0",
     "husky": "9.1.7",
@@ -55,7 +55,7 @@
     "typescript": "5.9.3"
   },
   "peerDependencies": {
-    "astro": "^5.0.0",
+    "astro": "^6.0.0",
     "eventsource": "^4.0.0"
   },
   "packageManager": "npm@11.7.0",
