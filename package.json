@@ -33,8 +33,8 @@
   "scripts": {
     "format": "prettier . --write --cache --cache-location=./.prettier-cache --experimental-cli",
     "format:check": "prettier . --check --cache --cache-location=./.prettier-cache --experimental-cli",
-    "lint": "oxlint --type-aware",
-    "lint:fix": "oxlint --type-aware --fix",
+    "lint": "oxlint --type-aware --type-check",
+    "lint:fix": "oxlint --type-aware --type-check --fix",
     "prepare": "husky",
     "typecheck": "tsc --noEmit"
   },
