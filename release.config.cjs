@@ -27,7 +27,7 @@ const plugins = [
   [
     "@semantic-release/commit-analyzer",
     {
-      preset: "angular",
+      preset: "conventionalcommits",
       releaseRules: [
         { breaking: true, release: "major" },
         { type: "docs", scope: "README", release: "patch" },
@@ -47,8 +47,18 @@ const plugins = [
       parserOpts: {
         noteKeywords: ["BREAKING CHANGE", "BREAKING CHANGES"]
       },
-      writerOpts: {
-        commitsSort: ["subject", "scope"]
+      presetConfig: {
+        types: [
+          { type: "feat", section: "🚀 Features" },
+          { type: "fix", section: "🩹 Bug Fixes" },
+          { type: "perf", section: "⚡ Performance Improvements" },
+          { type: "revert", section: "↩️ Reverts" },
+          { type: "docs", section: "📖 Documentation" },
+          { type: "refactor", section: "🛠️ Code Refactoring" },
+          { type: "test", section: "🧪 Tests" },
+          { type: "build", scope: "deps", section: "🏗 Dependency updates" },
+          { type: "build", hidden: true }
+        ]
       }
     }
   ],
