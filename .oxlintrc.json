@@ -195,6 +195,7 @@
     "typescript/consistent-type-imports": "error",
     "typescript/no-empty-interface": "error",
     "typescript/prefer-for-of": "error",
+    "typescript/prefer-optional-chain": "warn",
     "typescript/prefer-reduce-type-parameter": "warn",
     "unicorn/catch-error-name": "warn",
     "unicorn/consistent-date-clone": "warn",
