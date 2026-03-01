@@ -5,34 +5,38 @@
   "keywords": [
     "astro",
     "astro-integration",
-    "pocketbase",
-    "withastro",
-    "devtools",
     "dev-overlay",
     "dev-toolbar",
-    "tooling"
+    "devtools",
+    "pocketbase",
+    "tooling",
+    "withastro"
   ],
   "homepage": "https://github.com/pawcoding/astro-integration-pocketbase",
   "bugs": {
     "url": "https://github.com/pawcoding/astro-integration-pocketbase/issues"
   },
+  "license": "MIT",
+  "author": "Luis Wolf <development@pawcode.de> (https://pawcode.de)",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pawcoding/astro-integration-pocketbase.git"
-  },
-  "license": "MIT",
-  "author": "Luis Wolf <development@pawcode.de> (https://pawcode.de)",
-  "type": "module",
-  "exports": {
-    ".": "./index.ts"
   },
   "files": [
     "src",
     "index.ts"
   ],
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
-    "format": "prettier . --write --cache --cache-location=./.prettier-cache --experimental-cli",
-    "format:check": "prettier . --check --cache --cache-location=./.prettier-cache --experimental-cli",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "lint": "oxlint --type-aware",
     "lint:fix": "oxlint --type-aware --fix",
     "prepare": "husky",
@@ -47,20 +51,14 @@
     "globals": "17.4.0",
     "husky": "9.1.7",
     "lint-staged": "16.3.0",
+    "oxfmt": "0.35.0",
     "oxlint": "1.50.0",
     "oxlint-tsgolint": "0.15.0",
-    "prettier": "3.8.1",
-    "prettier-plugin-organize-imports": "4.3.0",
-    "prettier-plugin-packagejson": "3.0.0",
     "typescript": "5.9.3"
   },
   "peerDependencies": {
     "astro": "^5.0.0",
     "eventsource": "^4.0.0"
   },
-  "packageManager": "npm@11.11.0",
-  "publishConfig": {
-    "access": "public",
-    "provenance": true
-  }
+  "packageManager": "npm@11.11.0"
 }
