@@ -42,7 +42,8 @@ export function refreshCollectionsRealtime(
     refreshEnabled = enabled;
   });
 
-  const eventSource = new EventSource(`${options.url}/api/realtime`);
+  const eventSourceUrl = new URL("api/realtime", options.url).href;
+  const eventSource = new EventSource(eventSourceUrl);
   let wasConnectedOnce = false;
   let isConnected = false;
 
@@ -134,7 +135,8 @@ async function handleConnectEvent(
   }
 
   // Subscribe to the PocketBase realtime API
-  const result = await fetch(`${options.url}/api/realtime`, {
+  const eventSourceUrl = new URL("api/realtime/subscribe", options.url).href;
+  const result = await fetch(eventSourceUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
