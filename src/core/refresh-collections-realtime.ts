@@ -28,6 +28,7 @@ export function refreshCollectionsRealtime(
   }
 
   // Check if EventSource is available
+  // oxlint-disable-next-line no-unnecessary-condition
   if (!EventSource) {
     logger.warn(
       "EventSource is not available, skipping subscription to PocketBase realtime API.\n" +
