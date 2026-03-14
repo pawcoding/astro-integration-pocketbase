@@ -11,14 +11,14 @@ export function mapCollectionsToWatch(
 ): Map<string, Array<string>> | undefined {
   // Check if collections should be watched
   if (!collectionsToWatch) {
-    return;
+    return undefined;
   }
 
   // Check if collectionsToWatch is an array
   if (Array.isArray(collectionsToWatch)) {
     // Check if the array is empty
     if (collectionsToWatch.length === 0) {
-      return;
+      return undefined;
     }
 
     // Create a map where each collection is watched by itself
@@ -29,7 +29,7 @@ export function mapCollectionsToWatch(
 
   // Check if collectionsToWatch is an empty object
   if (Object.keys(collectionsToWatch).length === 0) {
-    return;
+    return undefined;
   }
 
   // Map collections to watch

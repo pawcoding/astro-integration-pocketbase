@@ -59,8 +59,9 @@ export function createHeader(
     </astro-dev-toolbar-badge>
 
     <div class="actions">
-      ${realtime
-        ? /* HTML */ `
+      ${
+        realtime
+          ? /* HTML */ `
             <div class="toggle-container">
               <label
                 for="real-time"
@@ -71,9 +72,11 @@ export function createHeader(
               <!-- real-time-toggle -->
             </div>
           `
-        : ""}
-      ${hasContentLoader
-        ? /* HTML */ `
+          : ""
+      }
+      ${
+        hasContentLoader
+          ? /* HTML */ `
             <astro-dev-toolbar-button
               id="refresh-content"
               size="small"
@@ -83,7 +86,8 @@ export function createHeader(
               Refresh content
             </astro-dev-toolbar-button>
           `
-        : ""}
+          : ""
+      }
     </div>
   `;
 

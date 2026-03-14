@@ -75,9 +75,11 @@ export function initToolbar(
       <hr />
 
       <main>
-        ${entities.length > 0
-          ? createEntities(entities, options.baseUrl)
-          : createPlaceholder()}
+        ${
+          entities.length > 0
+            ? createEntities(entities, options.baseUrl)
+            : createPlaceholder()
+        }
       </main>
     `);
 

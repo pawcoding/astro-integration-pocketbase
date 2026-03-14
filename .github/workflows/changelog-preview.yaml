@@ -17,7 +17,7 @@ jobs:
       # Checkout repository with full history for semantic-release
       # This checks out the PR merge commit to analyze what would be released
       - name: 📥 Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.head_ref }}
           persist-credentials: false
@@ -26,7 +26,7 @@ jobs:
       # This analyzes commits from the base branch to the PR head
       - name: 🔮 Generate changelog preview
         id: changelog
-        uses: cycjimmy/semantic-release-action@v5
+        uses: cycjimmy/semantic-release-action@v6
         with:
           semantic_version: 25
           dry_run: true

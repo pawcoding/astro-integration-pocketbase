@@ -27,7 +27,7 @@ jobs:
     steps:
       # Checkout repository
       - name: 📥 Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           persist-credentials: false
 
@@ -57,11 +57,16 @@ jobs:
       - name: 🧪 Type check
         run: npm run typecheck
 
+      # Disable corepack to prevent issues with semantic-release
+      # See: https://github.com/cycjimmy/semantic-release-action/issues/258
+      - name: ⚙️ Disable corepack
+        run: corepack disable npm
+
       # Create release
       - name: 🚀 Create release
         if: github.repository == 'pawcoding/astro-integration-pocketbase'
         id: release
-        uses: cycjimmy/semantic-release-action@v5
+        uses: cycjimmy/semantic-release-action@v6
         with:
           semantic_version: 25
         env:
@@ -71,7 +76,7 @@ jobs:
       # Update project on website
       - name: 🖥️ Update website
         if: github.repository == 'pawcoding/astro-integration-pocketbase' && steps.release.outputs.new_release_published == 'true' && !steps.release.outputs.new_release_channel  && steps.release.outputs.new_release_patch_version == '0'
-        uses: pawcoding/update-project-action@v0.0.4
+        uses: pawcoding/update-project-action@v0.0.5
         with:
           pocketbase-url: ${{ vars.PB_URL }}
           collection-id: ${{ vars.PB_COLLECTION }}
