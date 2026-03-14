@@ -1,3 +1,9 @@
+## [2.1.9](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.8...v2.1.9) (2026-03-14)
+
+### 🛠️ Code Refactoring
+
+* trigger new release ([b0b7954](https://github.com/pawcoding/astro-integration-pocketbase/commit/b0b7954cafbcfa060a38fab8d9ded44178d176b4))
+
 ## [2.1.8](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.7...v2.1.8) (2026-03-14)
 
 ## [2.1.7](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.6...v2.1.7) (2026-03-14)
