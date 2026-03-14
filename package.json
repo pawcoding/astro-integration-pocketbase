@@ -40,7 +40,7 @@
     "lint": "oxlint --type-aware --type-check",
     "lint:fix": "oxlint --type-aware --type-check --fix",
     "prepare": "husky",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "npx @typescript/native-preview --noEmit"
   },
   "devDependencies": {
     "@commitlint/cli": "20.4.4",
@@ -53,8 +53,7 @@
     "lint-staged": "16.4.0",
     "oxfmt": "0.40.0",
     "oxlint": "1.55.0",
-    "oxlint-tsgolint": "0.16.0",
-    "typescript": "5.9.3"
+    "oxlint-tsgolint": "0.16.0"
   },
   "peerDependencies": {
     "astro": "^6.0.0",
