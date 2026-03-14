@@ -28,6 +28,7 @@ export function refreshCollectionsRealtime(
   }
 
   // Check if EventSource is available
+  // oxlint-disable-next-line no-unnecessary-condition
   if (!EventSource) {
     logger.warn(
       "EventSource is not available, skipping subscription to PocketBase realtime API.\n" +
@@ -42,7 +43,8 @@ export function refreshCollectionsRealtime(
     refreshEnabled = enabled;
   });
 
-  const eventSource = new EventSource(`${options.url}/api/realtime`);
+  const eventSourceUrl = new URL("api/realtime", options.url).href;
+  const eventSource = new EventSource(eventSourceUrl);
   let wasConnectedOnce = false;
   let isConnected = false;
 
@@ -134,7 +136,8 @@ async function handleConnectEvent(
   }
 
   // Subscribe to the PocketBase realtime API
-  const result = await fetch(`${options.url}/api/realtime`, {
+  const eventSourceUrl = new URL("api/realtime/subscribe", options.url).href;
+  const result = await fetch(eventSourceUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -43,7 +43,7 @@ const plugins = [
   [
     "@semantic-release/release-notes-generator",
     {
-      preset: "angular",
+      preset: "conventionalcommits",
       parserOpts: {
         noteKeywords: ["BREAKING CHANGE", "BREAKING CHANGES"]
       },

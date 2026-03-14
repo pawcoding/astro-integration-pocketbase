@@ -52,7 +52,7 @@ npm run typecheck
 
 Before any commit, the following MUST pass:
 
-1. `npm run format` - Code formatting
+1. `npm run format` - Code formatting with oxfmt
 2. `npm run lint:fix` - Linting with oxlint (and type-checking at the same time)
 3. `npm run typecheck` - TypeScript type checking
 

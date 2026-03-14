@@ -35,8 +35,9 @@ function createEntity(data: Entity, baseUrl: string): string {
       <div class="entity">
         <pre>${JSON.stringify(data, undefined, 2).replaceAll("<", "&lt;")}</pre>
 
-        ${baseUrl
-          ? /* HTML */ `
+        ${
+          baseUrl
+            ? /* HTML */ `
               <astro-dev-toolbar-button
                 size="small"
                 button-style="purple"
@@ -46,7 +47,8 @@ function createEntity(data: Entity, baseUrl: string): string {
                 View in PocketBase
               </astro-dev-toolbar-button>
             `
-          : ""}
+            : ""
+        }
       </div>
     </astro-dev-toolbar-card>
   `;

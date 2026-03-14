@@ -1,3 +1,24 @@
+## [2.1.10](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.9...v2.1.10) (2026-03-14)
+
+### 🛠️ Code Refactoring
+
+* trigger new release ([92ab1c4](https://github.com/pawcoding/astro-integration-pocketbase/commit/92ab1c4b7c89ca4da891a294c711a27ad0670ea9))
+
+## [2.1.9](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.8...v2.1.9) (2026-03-14)
+
+### 🛠️ Code Refactoring
+
+* trigger new release ([b0b7954](https://github.com/pawcoding/astro-integration-pocketbase/commit/b0b7954cafbcfa060a38fab8d9ded44178d176b4))
+
+## [2.1.8](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.7...v2.1.8) (2026-03-14)
+
+## [2.1.7](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.6...v2.1.7) (2026-03-14)
+
+
+### Bug Fixes
+
+* prevent double slash in realtime path when base url contains trailing slash ([ee0cc5e](https://github.com/pawcoding/astro-integration-pocketbase/commit/ee0cc5e6905d3939def84c1051fd83c4c4dfbc6e))
+
 ## [2.1.6](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.5...v2.1.6) (2025-12-13)
 
 ## [2.1.5](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.4...v2.1.5) (2025-11-22)

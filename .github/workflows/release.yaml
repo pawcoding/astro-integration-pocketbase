@@ -76,7 +76,7 @@ jobs:
       # Update project on website
       - name: 🖥️ Update website
         if: github.repository == 'pawcoding/astro-integration-pocketbase' && steps.release.outputs.new_release_published == 'true' && !steps.release.outputs.new_release_channel  && steps.release.outputs.new_release_patch_version == '0'
-        uses: pawcoding/update-project-action@v0.0.4
+        uses: pawcoding/update-project-action@v0.0.5
         with:
           pocketbase-url: ${{ vars.PB_URL }}
           collection-id: ${{ vars.PB_COLLECTION }}

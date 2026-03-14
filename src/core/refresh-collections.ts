@@ -18,6 +18,7 @@ export function handleRefreshCollections({
   // Listen for the refresh event of the toolbar
   toolbar.on(
     "astro-integration-pocketbase:refresh",
+    // oxlint-disable-next-line strict-void-return
     async ({ force }: { force: boolean }) => {
       // Send a loading state to the toolbar
       toolbar.send("astro-integration-pocketbase:refresh", {

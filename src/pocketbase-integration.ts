@@ -1,6 +1,6 @@
+import { fileURLToPath } from "node:url";
 import type { AstroIntegration } from "astro";
 import type { EventSource } from "eventsource";
-import { fileURLToPath } from "node:url";
 import { handleRefreshCollections, refreshCollectionsRealtime } from "./core";
 import type { ToolbarOptions } from "./toolbar/types/options";
 import type { PocketBaseIntegrationOptions } from "./types/pocketbase-integration-options.type";
