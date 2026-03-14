@@ -66,7 +66,7 @@ jobs:
       - name: 🚀 Create release
         if: github.repository == 'pawcoding/astro-integration-pocketbase'
         id: release
-        uses: cycjimmy/semantic-release-action@v6
+        uses: cycjimmy/semantic-release-action@v5
         with:
           semantic_version: 25
         env:
