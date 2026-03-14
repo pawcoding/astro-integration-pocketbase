@@ -1,3 +1,10 @@
+## [2.1.7](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.6...v2.1.7) (2026-03-14)
+
+
+### Bug Fixes
+
+* prevent double slash in realtime path when base url contains trailing slash ([ee0cc5e](https://github.com/pawcoding/astro-integration-pocketbase/commit/ee0cc5e6905d3939def84c1051fd83c4c4dfbc6e))
+
 ## [2.1.6](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.5...v2.1.6) (2025-12-13)
 
 ## [2.1.5](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.4...v2.1.5) (2025-11-22)
