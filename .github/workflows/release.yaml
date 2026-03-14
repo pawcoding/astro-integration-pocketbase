@@ -39,7 +39,7 @@ jobs:
 
       # Enable corepack
       - name: ⚙️ Enable corepack
-        run: corepack enable && corepack enable npm
+        run: corepack enable
 
       # Install dependencies
       - name: 📦 Install dependencies
@@ -57,11 +57,6 @@ jobs:
       - name: 🧪 Type check
         run: npm run typecheck
 
-      # Disable corepack to prevent issues with semantic-release
-      # See: https://github.com/cycjimmy/semantic-release-action/issues/258
-      - name: ⚙️ Disable corepack
-        run: corepack disable npm
-
       # Create release
       - name: 🚀 Create release
         if: github.repository == 'pawcoding/astro-integration-pocketbase'
@@ -69,9 +64,6 @@ jobs:
         uses: cycjimmy/semantic-release-action@v5
         with:
           semantic_version: 25
-          extra_plugins: |
-            conventional-changelog-conventionalcommits
-            @semantic-release/changelog
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           CUSTOM_TAG: ${{ inputs.tag }}
