@@ -27,7 +27,7 @@ const plugins = [
   [
     "@semantic-release/commit-analyzer",
     {
-      preset: "angular",
+      preset: "conventionalcommits",
       releaseRules: [
         { breaking: true, release: "major" },
         { type: "docs", scope: "README", release: "patch" },

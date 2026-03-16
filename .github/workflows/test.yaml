@@ -41,13 +41,9 @@ jobs:
         run: npm ci
 
       # Lint code
-      - name: 🧹 Lint code
+      - name: 🧹 Lint code (includes type-check)
         run: npm run lint
 
       # Check format
       - name: 🧹 Check format
         run: npm run format:check
-
-      # Type check
-      - name: 🧪 Type check
-        run: npm run typecheck
