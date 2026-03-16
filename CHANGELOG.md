@@ -1,3 +1,9 @@
+## [2.1.11](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.10...v2.1.11) (2026-03-16)
+
+### 🩹 Bug Fixes
+
+* **realtime:** use correct URL for realtime subscription ([c01355d](https://github.com/pawcoding/astro-integration-pocketbase/commit/c01355dc6523988c9190e7b2f834966aa9478888))
+
 ## [2.1.10](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.9...v2.1.10) (2026-03-14)
 
 ### 🛠️ Code Refactoring
