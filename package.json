@@ -1,6 +1,6 @@
 {
   "name": "astro-integration-pocketbase",
-  "version": "2.1.10",
+  "version": "2.1.11",
   "description": "An Astro integration to support developers working with astro-loader-pocketbase.",
   "keywords": [
     "astro",
