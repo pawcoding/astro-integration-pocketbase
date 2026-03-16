@@ -136,8 +136,8 @@ async function handleConnectEvent(
   }
 
   // Subscribe to the PocketBase realtime API
-  const eventSourceUrl = new URL("api/realtime/subscribe", options.url).href;
-  const result = await fetch(eventSourceUrl, {
+  const subscriptionUrl = new URL("api/realtime", options.url).href;
+  const result = await fetch(subscriptionUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
