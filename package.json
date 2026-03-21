@@ -1,6 +1,6 @@
 {
   "name": "astro-integration-pocketbase",
-  "version": "2.1.11",
+  "version": "3.0.0-next.1",
   "description": "An Astro integration to support developers working with astro-loader-pocketbase.",
   "keywords": [
     "astro",
@@ -37,27 +37,26 @@
   "scripts": {
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "lint": "oxlint --type-aware",
-    "lint:fix": "oxlint --type-aware --fix",
+    "lint": "oxlint --type-aware --type-check",
+    "lint:fix": "oxlint --type-aware --type-check --fix",
     "prepare": "husky",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "npx @typescript/native-preview --noEmit"
   },
   "devDependencies": {
     "@commitlint/cli": "20.4.4",
     "@commitlint/config-conventional": "20.4.4",
     "@types/node": "24.12.0",
-    "astro": "5.18.1",
+    "astro": "6.0.4",
     "eventsource": "4.1.0",
     "globals": "17.4.0",
     "husky": "9.1.7",
-    "lint-staged": "16.3.4",
+    "lint-staged": "16.4.0",
     "oxfmt": "0.40.0",
     "oxlint": "1.55.0",
-    "oxlint-tsgolint": "0.16.0",
-    "typescript": "5.9.3"
+    "oxlint-tsgolint": "0.16.0"
   },
   "peerDependencies": {
-    "astro": "^5.0.0",
+    "astro": "^6.0.0",
     "eventsource": "^4.0.0"
   },
   "packageManager": "npm@11.11.1"
