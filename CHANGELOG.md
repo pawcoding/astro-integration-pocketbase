@@ -1,3 +1,21 @@
+## [3.0.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.11...v3.0.0) (2026-03-21)
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** Only compatible with astro v6.
+
+### 📖 Documentation
+
+* **README:** update compatibility table ([44bf6bd](https://github.com/pawcoding/astro-integration-pocketbase/commit/44bf6bd9b799031640baa5d762affad5558edf1c))
+
+### 🏗 Dependency updates
+
+* **deps:** update dependencies ([1427722](https://github.com/pawcoding/astro-integration-pocketbase/commit/1427722b5d3d84a53faf2b2673c40a988a88ac65))
+* **deps:** update dependencies ([c00bf36](https://github.com/pawcoding/astro-integration-pocketbase/commit/c00bf366a2ac1f951e52343f05ddc89b83cbacc1))
+* **deps:** update dependencies ([362e117](https://github.com/pawcoding/astro-integration-pocketbase/commit/362e117d00426c5c10bb158dd69fef19c41df9e7))
+* **deps:** update linter + rule set ([3b1bf6c](https://github.com/pawcoding/astro-integration-pocketbase/commit/3b1bf6c94d963d534fd641a9ae5129df09e6c12e))
+* **deps:** upgrade to astro@v6 ([7af50a7](https://github.com/pawcoding/astro-integration-pocketbase/commit/7af50a7d65e1a10f667052d1080e7d53e979f2f5))
+
 ## [2.1.11](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.10...v2.1.11) (2026-03-16)
 
 ### 🩹 Bug Fixes
