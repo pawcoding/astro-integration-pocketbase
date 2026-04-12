@@ -144,7 +144,7 @@ async function handleConnectEvent(
       Authorization: superuserToken || ""
     },
     body: JSON.stringify({
-      clientId: clientId,
+      clientId,
       subscriptions: remoteCollections.map((collection) => `${collection}/*`)
     })
   });

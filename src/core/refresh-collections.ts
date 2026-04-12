@@ -33,7 +33,7 @@ export function handleRefreshCollections({
         loaders: ["pocketbase-loader"],
         context: {
           source: "astro-integration-pocketbase",
-          force: force
+          force
         }
       });
 
