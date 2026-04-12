@@ -36,6 +36,9 @@ export function mapCollectionsToWatch(
   const collectionsMap = new Map<string, Array<string>>();
   for (const localCollection in collectionsToWatch) {
     const watch = collectionsToWatch[localCollection];
+    if (!watch) {
+      continue;
+    }
 
     // Check if collection should be watched by itself
     if (watch === true) {
