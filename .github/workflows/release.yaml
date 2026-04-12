@@ -59,11 +59,6 @@ jobs:
       - name: 🧪 Type check
         run: npx tsc --noEmit
 
-      # Disable corepack to prevent issues with semantic-release
-      # See https://github.com/cycjimmy/semantic-release-action/issues/258
-      - name: ⚙️ Disable corepack
-        run: corepack disable && corepack disable npm
-
       # Create release
       - name: 🚀 Create release
         if: github.repository == 'pawcoding/astro-integration-pocketbase'
