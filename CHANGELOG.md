@@ -1,3 +1,13 @@
+## [3.0.1](https://github.com/pawcoding/astro-integration-pocketbase/compare/v3.0.0...v3.0.1) (2026-04-12)
+
+### 🛠️ Code Refactoring
+
+* resolve new linter warnings ([7996eb0](https://github.com/pawcoding/astro-integration-pocketbase/commit/7996eb0168d8f21fb273789f6d0f33cf5369f7a5))
+
+### 🏗 Dependency updates
+
+* **deps:** update dependencies ([3126a0b](https://github.com/pawcoding/astro-integration-pocketbase/commit/3126a0b4dba701175df9f9e8f3256e637109a082))
+
 ## [3.0.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v2.1.11...v3.0.0) (2026-03-21)
 
 ### ⚠ BREAKING CHANGES
