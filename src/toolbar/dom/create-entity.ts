@@ -4,8 +4,15 @@ import type { Entity } from "../types/entity";
  * Creates cards for the entities.
  */
 export function createEntities(data: Array<Entity>, baseUrl: string): string {
+  const groupedData = Object.groupBy(data, (data) => data.collectionName);
+  const collections = Object.keys(groupedData);
+
   return /* HTML */ `
     <style>
+      .collectionName {
+        text-transform: capitalize;
+      }
+
       .entity {
         position: relative;
 
@@ -22,7 +29,16 @@ export function createEntities(data: Array<Entity>, baseUrl: string): string {
       }
     </style>
 
-    ${data.map((entity) => createEntity(entity, baseUrl)).join("")}
+    ${collections
+      .map(
+        (collection) => /* HTML */ `
+          <b class=".collectionName">${collection}</b>
+          ${groupedData[collection]
+            ?.map((entity) => createEntity(entity, baseUrl))
+            .join("")}
+        `
+      )
+      .join("")}
   `;
 }
 

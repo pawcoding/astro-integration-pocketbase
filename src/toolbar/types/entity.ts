@@ -4,4 +4,5 @@
 export interface Entity {
   id: string;
   collectionId: string;
+  collectionName: string;
 }
