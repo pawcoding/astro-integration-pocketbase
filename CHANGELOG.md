@@ -1,3 +1,17 @@
+## [3.1.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v3.0.2...v3.1.0) (2026-04-24)
+
+### 🚀 Features
+
+* **toolbar:** group entities by collectionName ([ea7bff4](https://github.com/pawcoding/astro-integration-pocketbase/commit/ea7bff4263155bcf236dfaa27bdf878a31875b16))
+
+### 🩹 Bug Fixes
+
+* **toolbar:** update PocketBase query params to function with 0.37.0 ([ecd8f25](https://github.com/pawcoding/astro-integration-pocketbase/commit/ecd8f257bb6b8d26e698ad5638804deb3ec63000))
+
+### 🏗 Dependency updates
+
+* **deps:** update dependencies ([bc5f903](https://github.com/pawcoding/astro-integration-pocketbase/commit/bc5f9036cf906d5a7e12f78012352c0cda2245e4))
+
 ## [3.0.2](https://github.com/pawcoding/astro-integration-pocketbase/compare/v3.0.1...v3.0.2) (2026-04-12)
 
 ### 🏗 Dependency updates
