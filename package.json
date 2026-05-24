@@ -44,7 +44,7 @@
     "lint": "oxlint --type-aware --type-check",
     "lint:fix": "oxlint --type-aware --type-check --fix",
     "prepare": "husky",
-    "prepublish": "npm run build",
+    "prepublishOnly": "npm run build",
     "typecheck": "npx @typescript/native-preview --noEmit -p src/tsconfig.json"
   },
   "devDependencies": {
