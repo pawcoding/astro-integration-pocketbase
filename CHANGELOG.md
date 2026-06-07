@@ -1,3 +1,10 @@
+## [3.1.2](https://github.com/pawcoding/astro-integration-pocketbase/compare/v3.1.1...v3.1.2) (2026-06-07)
+
+### 🏗 Dependency updates
+
+* **deps:** update dependencies ([9d5ce90](https://github.com/pawcoding/astro-integration-pocketbase/commit/9d5ce900a09ce9fc29541abb125deda9dd9f359d))
+* **deps:** update dependencies ([b16ecd8](https://github.com/pawcoding/astro-integration-pocketbase/commit/b16ecd8a69ecf4c2c6505aad1af5e09652c7f728))
+
 ## [3.1.1](https://github.com/pawcoding/astro-integration-pocketbase/compare/v3.1.0...v3.1.1) (2026-05-09)
 
 ### 🏗 Dependency updates
