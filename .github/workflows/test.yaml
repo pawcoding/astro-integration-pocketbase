@@ -2,10 +2,9 @@ name: 🧪 Test code
 # Run this on every push except master and next
 on:
   push:
-    branches:
-      - "**"
-      - "!master"
-      - "!next"
+    branches-ignore:
+      - master
+      - next
 
 env:
   HUSKY: 0
@@ -47,3 +46,13 @@ jobs:
       # Check format
       - name: 🧹 Check format
         run: npm run format:check
+
+      # Type check
+      #   Still included for now, since the oxlint built-in typecheck uses TypeScript v7.
+      #   This one uses the TypeScript version actually specified in the project.
+      - name: 🧪 Type check
+        run: npx tsc --noEmit
+
+      # Build
+      - name: 🏗️ Build code
+        run: npm run build

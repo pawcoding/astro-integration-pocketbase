@@ -1,6 +1,6 @@
 {
   "name": "astro-integration-pocketbase",
-  "version": "3.1.1",
+  "version": "3.1.2-next.2",
   "description": "An Astro integration to support developers working with astro-loader-pocketbase.",
   "keywords": [
     "astro",
@@ -23,41 +23,54 @@
     "url": "git+https://github.com/pawcoding/astro-integration-pocketbase.git"
   },
   "files": [
-    "src",
-    "index.ts"
+    "dist"
   ],
   "type": "module",
+  "types": "./dist/index.d.mts",
   "exports": {
-    ".": "./index.ts"
+    ".": "./dist/index.mjs",
+    "./middleware": "./dist/middleware.mjs",
+    "./toolbar": "./dist/toolbar.mjs",
+    "./package.json": "./package.json"
   },
   "publishConfig": {
     "access": "public",
     "provenance": true
   },
   "scripts": {
+    "build": "tsdown",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
     "lint": "oxlint --type-aware --type-check",
     "lint:fix": "oxlint --type-aware --type-check --fix",
     "prepare": "husky",
+    "prepublishOnly": "npm run build",
     "typecheck": "npx @typescript/native-preview --noEmit -p src/tsconfig.json"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.5.3",
-    "@commitlint/config-conventional": "20.5.3",
-    "@types/node": "24.12.0",
-    "astro": "6.2.1",
+    "@commitlint/cli": "21.0.2",
+    "@commitlint/config-conventional": "21.0.2",
+    "@types/node": "24.12.4",
+    "astro": "6.4.2",
     "eventsource": "4.1.0",
     "globals": "17.6.0",
     "husky": "9.1.7",
-    "lint-staged": "16.4.0",
-    "oxfmt": "0.47.0",
-    "oxlint": "1.62.0",
-    "oxlint-tsgolint": "0.22.1"
+    "lint-staged": "17.0.6",
+    "oxfmt": "0.52.0",
+    "oxlint": "1.67.0",
+    "oxlint-tsgolint": "0.23.0",
+    "publint": "0.3.21",
+    "tsdown": "0.22.1"
   },
   "peerDependencies": {
     "astro": "^6.0.0",
     "eventsource": "^4.0.0"
   },
-  "packageManager": "npm@11.14.1"
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "packageManager": "npm@11.16.0",
+  "allowScripts": {
+    "esbuild@0.27.7": true
+  }
 }
