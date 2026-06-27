@@ -51,7 +51,7 @@
     "@commitlint/cli": "21.0.2",
     "@commitlint/config-conventional": "21.0.2",
     "@types/node": "24.13.2",
-    "astro": "6.4.8",
+    "astro": "7.0.3",
     "eventsource": "4.1.0",
     "globals": "17.6.0",
     "husky": "9.1.7",
@@ -63,7 +63,7 @@
     "tsdown": "0.22.3"
   },
   "peerDependencies": {
-    "astro": "^6.0.0",
+    "astro": "^7.0.0",
     "eventsource": "^4.0.0"
   },
   "engines": {
