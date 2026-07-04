@@ -57,7 +57,7 @@ function createEntity(data: Entity, baseUrl: string): string {
                 size="small"
                 button-style="purple"
                 title="View in PocketBase"
-                onclick="window.open('${baseUrl}/_/#/collections?collection=${data.collectionId}&recordId=${data.id}&record=${data.id}', '_blank')"
+                onclick="window.open('${baseUrl}/_/#/collections?collection=${data.collectionId}&record=${data.id}', '_blank')"
               >
                 View in PocketBase
               </astro-dev-toolbar-button>
