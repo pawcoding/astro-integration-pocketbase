@@ -117,31 +117,13 @@ This project does not use tests (yet), but you can use a local Astro project usi
    git push origin feature/your-feature-name
    ```
 
-2. Create a pull request on GitHub using our PR template (target the `next` branch if available)
+2. Create a pull request on GitHub using our PR template (target the `next` branch)
 
-3. In your PR description:
+3. In your PR description, follow the PR template:
    - Clearly describe what your changes do and why
    - Reference any related issues
    - Include any breaking changes or migration notes
-   - Add screenshots or examples if applicable
-
-### PR Structure
-
-Your PR should follow this structure:
-
-```markdown
-## Changes
-
-- Clear bullet points describing what changed
-
-## Issues
-
-- Closes #123 (if applicable)
-
-## Dependencies
-
-- Depends on: #456 (if applicable)
-```
+   - Confirm manual testing in a local Astro project
 
 ### Review Process
 
@@ -171,7 +153,7 @@ Provide as much detail as possible to help us understand and reproduce the issue
 
 Please be respectful and constructive in all interactions. We want to maintain a welcoming environment for all contributors.
 
-While it's okay to use AI tools like Copilot (we provide instructions for agents in `.github/copilot-instructions.md`), please ensure that the code you submit adheres to our quality standards and conventions. Especially since this project does not use tests yet, it's important to ensure your changes are well-tested in a local Astro project before submitting a PR.
+While it's okay to use AI tools like Copilot (we provide instructions for agents in `AGENTS.md`), please ensure that the code you submit adheres to our quality standards and conventions. Especially since this project does not use tests yet, it's important to ensure your changes are well-tested in a local Astro project before submitting a PR.
 
 ## Questions?
 
