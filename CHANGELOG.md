@@ -1,3 +1,26 @@
+## [4.0.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v3.1.4...v4.0.0) (2026-07-04)
+
+### ⚠ BREAKING CHANGES
+
+* **toolbar:** Entity links directly into PocketBase will only work with v0.37.0 and above.
+* **deps:** Upgrade to Astro v7
+
+### 📖 Documentation
+
+* **agents:** update agent instructions ([95dfff4](https://github.com/pawcoding/astro-integration-pocketbase/commit/95dfff4c7bd936d6a8e060338f390a00d303431c))
+* **README:** add version information ([743aff9](https://github.com/pawcoding/astro-integration-pocketbase/commit/743aff915b1c3e99903e68f4daaca4711a6dc62a))
+* update readme and contributing instructions ([1bf8cc3](https://github.com/pawcoding/astro-integration-pocketbase/commit/1bf8cc3795243019364c0959506d14ee5efbef93))
+
+### 🛠️ Code Refactoring
+
+* **toolbar:** remove old link format ([bf441fd](https://github.com/pawcoding/astro-integration-pocketbase/commit/bf441fd84fce7e86afa1a37eb52a6c6db5de9080))
+
+### 🏗 Dependency updates
+
+* **deps:** update dependencies ([d5c20f3](https://github.com/pawcoding/astro-integration-pocketbase/commit/d5c20f3cae411a3754c0bfc574e80ddc7126fd75))
+* **deps:** update dependencies ([7ca058a](https://github.com/pawcoding/astro-integration-pocketbase/commit/7ca058a69959de273454db77bc3972a4d6c10a0d))
+* **deps:** upgrade packageManager ([cf85995](https://github.com/pawcoding/astro-integration-pocketbase/commit/cf8599516afad25c11c59c5ab7ca940650f0e5c9))
+
 ## [3.1.4](https://github.com/pawcoding/astro-integration-pocketbase/compare/v3.1.3...v3.1.4) (2026-06-27)
 
 ## [3.1.3](https://github.com/pawcoding/astro-integration-pocketbase/compare/v3.1.2...v3.1.3) (2026-06-20)
