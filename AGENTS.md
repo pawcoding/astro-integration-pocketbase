@@ -23,7 +23,7 @@ Relevant upstream documentation:
 ```bash
 npm run format       # oxfmt — format all files
 npm run lint:fix     # oxlint --fix — lint + auto-fix
-npm run typecheck    # @typescript/native-preview on src/
+npm run typecheck    # tsc --noEmit on src/
 npm run build        # tsdown → dist/
 ```
 
@@ -40,10 +40,6 @@ All three must pass before committing, in this order:
 ## No test suite
 
 This package has no unit or e2e tests. CI only runs lint, format check, type check, and build.
-
-## Typecheck quirk
-
-`npm run typecheck` uses `@typescript/native-preview` (TypeScript v7 internally), not `tsc`. CI additionally runs `npx tsc --noEmit` separately because results can differ. If you get typecheck failures from one but not the other, both matter.
 
 ## Code conventions (enforced by oxlint — violations are errors)
 
