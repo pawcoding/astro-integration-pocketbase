@@ -11,7 +11,7 @@ const config: UserConfig = defineConfig({
     sourcemap: true
   },
   deps: {
-    skipNodeModulesBundle: true
+    neverBundle: true
   },
   publint: true,
   exports: true
