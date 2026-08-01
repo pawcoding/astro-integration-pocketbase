@@ -1,3 +1,10 @@
+## [4.0.3](https://github.com/pawcoding/astro-integration-pocketbase/compare/v4.0.2...v4.0.3) (2026-08-01)
+
+### 🛠️ Code Refactoring
+
+* **realtime:** mark `eventsource` package as optional and use native global if available ([c3339a5](https://github.com/pawcoding/astro-integration-pocketbase/commit/c3339a56e19c2b88f895a65dd64f5df34cc74d1e))
+* resolve linter warnings ([e4e582d](https://github.com/pawcoding/astro-integration-pocketbase/commit/e4e582dfed676d6d90f5c84f445670cd2555ca3a))
+
 ## [4.0.2](https://github.com/pawcoding/astro-integration-pocketbase/compare/v4.0.1...v4.0.2) (2026-08-01)
 
 ### 🏗 Dependency updates
