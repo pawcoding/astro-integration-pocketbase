@@ -1,17 +1,16 @@
 import type { AstroIntegrationLogger, BaseIntegrationHooks } from "astro";
-import { EventSource } from "eventsource";
 import type { PocketBaseIntegrationOptions } from "../types/pocketbase-integration-options.type";
 import { getSuperuserToken } from "../utils/get-superuser-token";
 import { mapCollectionsToWatch } from "../utils/map-collections-to-watch";
 
-export function refreshCollectionsRealtime(
+export async function refreshCollectionsRealtime(
   options: PocketBaseIntegrationOptions,
   {
     logger,
     refreshContent,
     toolbar
   }: Parameters<BaseIntegrationHooks["astro:server:setup"]>[0]
-): EventSource | undefined {
+): Promise<EventSource | undefined> {
   // Check if collections should be watched
   const collectionsMap = mapCollectionsToWatch(options.collectionsToWatch);
   if (!collectionsMap) {
@@ -27,8 +26,17 @@ export function refreshCollectionsRealtime(
     return undefined;
   }
 
+  const EventSource =
+    // EventSource is only available natively with Node 22+ and --experimental-eventsource
+    // oxlint-disable-next-line typescript/no-unnecessary-condition
+    globalThis.EventSource ??
+    // Try to import the eventsource package as a fallback
+    (await import("eventsource")
+      .then((m) => m.EventSource)
+      .catch(() => undefined));
+
   // Check if EventSource is available
-  // oxlint-disable-next-line no-unnecessary-condition
+  // oxlint-disable-next-line typescript/no-unnecessary-condition
   if (!EventSource) {
     logger.warn(
       "EventSource is not available, skipping subscription to PocketBase realtime API.\n" +
@@ -49,7 +57,6 @@ export function refreshCollectionsRealtime(
   let isConnected = false;
 
   // Log potential errors
-  // oxlint-disable-next-line prefer-await-to-callbacks
   eventSource.addEventListener("error", (error) => {
     isConnected = false;
 
@@ -70,7 +77,7 @@ export function refreshCollectionsRealtime(
   for (const collection of remoteCollections) {
     eventSource.addEventListener(
       `${collection}/*`,
-      async (event: MessageEvent<string>) => {
+      (event: MessageEvent<string>) => {
         // Do not refresh if the refresh is disabled
         if (!refreshEnabled) {
           return;
@@ -78,7 +85,7 @@ export function refreshCollectionsRealtime(
 
         // Refresh the content
         logger.info(`Received update for ${collection}. Refreshing content...`);
-        await refreshContent({
+        void refreshContent({
           loaders: ["pocketbase-loader"],
           context: {
             source: "astro-integration-pocketbase",
@@ -92,21 +99,20 @@ export function refreshCollectionsRealtime(
   }
 
   // Add event listener for the connection event
-  eventSource.addEventListener(
-    "PB_CONNECT",
-    async (event: MessageEvent<void>) => {
-      isConnected = await handleConnectEvent(
-        event,
-        remoteCollections,
-        wasConnectedOnce,
-        options,
-        logger
-      );
+  eventSource.addEventListener("PB_CONNECT", (event: MessageEvent<void>) => {
+    void handleConnectEvent(
+      event,
+      remoteCollections,
+      wasConnectedOnce,
+      options,
+      logger
+      // oxlint-disable-next-line promise/prefer-await-to-then
+    ).then((isConnected) => {
       if (isConnected) {
         wasConnectedOnce = true;
       }
-    }
-  );
+    });
+  });
 
   return eventSource;
 }
