@@ -49,7 +49,6 @@ export function refreshCollectionsRealtime(
   let isConnected = false;
 
   // Log potential errors
-  // oxlint-disable-next-line prefer-await-to-callbacks
   eventSource.addEventListener("error", (error) => {
     isConnected = false;
 
