@@ -70,6 +70,11 @@
     "astro": "^7.0.0",
     "eventsource": "^4.0.0"
   },
+  "peerDependenciesMeta": {
+    "eventsource": {
+      "optional": true
+    }
+  },
   "engines": {
     "node": ">=22.12.0"
   },

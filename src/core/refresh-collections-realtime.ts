@@ -1,17 +1,16 @@
 import type { AstroIntegrationLogger, BaseIntegrationHooks } from "astro";
-import { EventSource } from "eventsource";
 import type { PocketBaseIntegrationOptions } from "../types/pocketbase-integration-options.type";
 import { getSuperuserToken } from "../utils/get-superuser-token";
 import { mapCollectionsToWatch } from "../utils/map-collections-to-watch";
 
-export function refreshCollectionsRealtime(
+export async function refreshCollectionsRealtime(
   options: PocketBaseIntegrationOptions,
   {
     logger,
     refreshContent,
     toolbar
   }: Parameters<BaseIntegrationHooks["astro:server:setup"]>[0]
-): EventSource | undefined {
+): Promise<EventSource | undefined> {
   // Check if collections should be watched
   const collectionsMap = mapCollectionsToWatch(options.collectionsToWatch);
   if (!collectionsMap) {
@@ -27,8 +26,17 @@ export function refreshCollectionsRealtime(
     return undefined;
   }
 
+  const EventSource =
+    // EventSource is only available natively with Node 22+ and --experimental-eventsource
+    // oxlint-disable-next-line typescript/no-unnecessary-condition
+    globalThis.EventSource ??
+    // Try to import the eventsource package as a fallback
+    (await import("eventsource")
+      .then((m) => m.EventSource)
+      .catch(() => undefined));
+
   // Check if EventSource is available
-  // oxlint-disable-next-line no-unnecessary-condition
+  // oxlint-disable-next-line typescript/no-unnecessary-condition
   if (!EventSource) {
     logger.warn(
       "EventSource is not available, skipping subscription to PocketBase realtime API.\n" +
