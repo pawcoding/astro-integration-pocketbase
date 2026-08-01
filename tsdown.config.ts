@@ -7,9 +7,6 @@ const config: UserConfig = defineConfig({
     { middleware: "src/middleware/index.ts" },
     { toolbar: "src/toolbar/index.ts" }
   ],
-  dts: {
-    sourcemap: true
-  },
   deps: {
     neverBundle: true
   },
