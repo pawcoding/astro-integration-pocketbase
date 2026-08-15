@@ -1,3 +1,9 @@
+## [4.0.4](https://github.com/pawcoding/astro-integration-pocketbase/compare/v4.0.3...v4.0.4) (2026-08-15)
+
+### 🏗 Dependency updates
+
+* **deps:** update dependencies ([1f1934b](https://github.com/pawcoding/astro-integration-pocketbase/commit/1f1934bc5ded9f369d176b74003de47139ed6a0c))
+
 ## [4.0.3](https://github.com/pawcoding/astro-integration-pocketbase/compare/v4.0.2...v4.0.3) (2026-08-01)
 
 ### 🛠️ Code Refactoring
