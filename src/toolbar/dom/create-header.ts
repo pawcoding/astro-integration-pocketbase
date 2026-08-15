@@ -58,31 +58,35 @@ export function createHeader(
     </astro-dev-toolbar-badge>
 
     <div class="actions">
-      ${realtime
-        ? /* HTML */ `
-            <div class="toggle-container">
-              <label
-                for="real-time"
-                title="Enable or disable real-time updates temporarily"
+      ${
+        realtime
+          ? /* HTML */ `
+              <div class="toggle-container">
+                <label
+                  for="real-time"
+                  title="Enable or disable real-time updates temporarily"
+                >
+                  Real-time updates
+                </label>
+                <!-- real-time-toggle -->
+              </div>
+            `
+          : ""
+      }
+      ${
+        hasContentLoader
+          ? /* HTML */ `
+              <astro-dev-toolbar-button
+                id="refresh-content"
+                size="small"
+                button-style="green"
+                title="Right click to force refresh every collection"
               >
-                Real-time updates
-              </label>
-              <!-- real-time-toggle -->
-            </div>
-          `
-        : ""}
-      ${hasContentLoader
-        ? /* HTML */ `
-            <astro-dev-toolbar-button
-              id="refresh-content"
-              size="small"
-              button-style="green"
-              title="Right click to force refresh every collection"
-            >
-              Refresh content
-            </astro-dev-toolbar-button>
-          `
-        : ""}
+                Refresh content
+              </astro-dev-toolbar-button>
+            `
+          : ""
+      }
     </div>
   `;
 

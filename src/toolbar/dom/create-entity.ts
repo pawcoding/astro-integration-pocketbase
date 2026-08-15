@@ -51,18 +51,20 @@ function createEntity(data: Entity, baseUrl: string): string {
       <div class="entity">
         <pre>${JSON.stringify(data, undefined, 2).replaceAll("<", "&lt;")}</pre>
 
-        ${baseUrl
-          ? /* HTML */ `
-              <astro-dev-toolbar-button
-                size="small"
-                button-style="purple"
-                title="View in PocketBase"
-                onclick="window.open('${baseUrl}/_/#/collections?collection=${data.collectionId}&record=${data.id}', '_blank')"
-              >
-                View in PocketBase
-              </astro-dev-toolbar-button>
-            `
-          : ""}
+        ${
+          baseUrl
+            ? /* HTML */ `
+                <astro-dev-toolbar-button
+                  size="small"
+                  button-style="purple"
+                  title="View in PocketBase"
+                  onclick="window.open('${baseUrl}/_/#/collections?collection=${data.collectionId}&record=${data.id}', '_blank')"
+                >
+                  View in PocketBase
+                </astro-dev-toolbar-button>
+              `
+            : ""
+        }
       </div>
     </astro-dev-toolbar-card>
   `;
