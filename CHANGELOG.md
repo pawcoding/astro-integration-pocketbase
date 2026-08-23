@@ -1,3 +1,14 @@
+## [5.0.0](https://github.com/pawcoding/astro-integration-pocketbase/compare/v4.0.4...v5.0.0) (2026-08-23)
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** `eventsource` peer-dependency was updated to v5. See
+their changelog for more information on breaking changes.
+
+### 🏗 Dependency updates
+
+* **deps:** update dependencies ([2eaf27c](https://github.com/pawcoding/astro-integration-pocketbase/commit/2eaf27c6ab2d6c411eb48c7dce49dc08118e01fd))
+
 ## [4.0.4](https://github.com/pawcoding/astro-integration-pocketbase/compare/v4.0.3...v4.0.4) (2026-08-15)
 
 ### 🏗 Dependency updates
