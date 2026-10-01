@@ -61,7 +61,7 @@
     "oxlint-tsgolint": "7.0.2001",
     "publint": "0.3.24",
     "tsdown": "0.23.0",
-    "typescript": "6.0.3"
+    "typescript": "7.0.2"
   },
   "peerDependencies": {
     "astro": "^7.0.0",
