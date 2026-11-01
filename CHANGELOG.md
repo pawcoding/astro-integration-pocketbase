@@ -1,3 +1,10 @@
+## [5.0.4](https://github.com/pawcoding/astro-integration-pocketbase/compare/v5.0.3...v5.0.4) (2026-11-01)
+
+### 🏗 Dependency updates
+
+* **deps:** update cycjimmy/semantic-release-action action to v8 ([72001dc](https://github.com/pawcoding/astro-integration-pocketbase/commit/72001dc40715d8e3a039cc66017cbda27a5a2a1d))
+* **deps:** update dependencies ([fe399de](https://github.com/pawcoding/astro-integration-pocketbase/commit/fe399de19912ffbf9fa86dbbbed23e15a59d6e33))
+
 ## [5.0.3](https://github.com/pawcoding/astro-integration-pocketbase/compare/v5.0.2...v5.0.3) (2026-10-15)
 
 ### 🏗 Dependency updates
